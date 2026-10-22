@@ -1,0 +1,5 @@
+*.zip
+.claude/
+.env
+*.env
+node_modules/

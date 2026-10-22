@@ -1,0 +1,29 @@
+Breaker SFX test batch (ElevenLabs Sound Effects). NOT wired into the game yet - listen first.
+Files = <name>_v1..v4.ogg (4 takes per move, Ogg/Opus) | key/move | prompt sent
+Lengths were set by hand for: q_spin_lunge 1.6s, w_leap 0.8, w_rupture 2.0, r_charge 2.5, a_tackle 1.2, s_drag 1.0,
+d_counter_success 1.2, f_titans_wrath 2.5, t_omnislash_flurry 2.5, t_omnislash_finale 3.5, z_overpower 2.0, space_dash 0.6. The rest are Auto.
+Open _preview.html in a browser to hear them all side by side.
+
+basic_1_swing        | auto attack hit 1      | Heavy greatsword horizontal swing, steel blade cutting the air, short whoosh, fantasy action game
+basic_2_swing        | auto attack hit 2      | Fast greatsword backhand slash, sharp metallic whoosh, fantasy action game
+basic_3_swing        | auto attack hit 3      | Heavy greatsword overhead chop, deep whoosh ending in a metal impact
+basic_4_finisher     | auto attack finisher   | Powerful spinning greatsword finisher slash, big whoosh and heavy armored impact, action game
+hit_impact           | any hit landing        | Greatsword hitting an armored monster, heavy meaty metal impact, crunchy, short
+q_spin_lunge         | [Q] Spin Lunge         | Greatsword whirlwind spin attack, rapid repeating whooshes building into a heavy ground slam
+w_leap               | [W] Earthbreaker jump  | Armored warrior leaping into the air, heavy jump whoosh with clanking plate armor
+w_rupture            | [W] Earthbreaker land  | Massive ground slam, earth shattering, rocks cracking and boulders erupting, deep boom
+e_guard              | [E] Bulwark guard      | Knight bracing a greatsword into a guard stance, heavy metal clank with a faint shimmer
+e_parry              | [E] successful parry   | Perfect sword parry, bright ringing metal clang with a magical shimmer, satisfying
+r_charge             | [R] holding charge     | Energy charging up on a sword, rising hum and electric crackle, anime power charge
+r_release            | [R] crescent wave      | Crescent energy wave slash released from a sword, sharp sweeping whoosh with an energy blast
+r_perfect            | [R] perfect release    | Perfectly timed energy slash, bright crystalline ping followed by a powerful energy wave
+a_tackle             | [A] Iron Tackle        | Armored shoulder charge, fast rushing whoosh ending in a heavy metal body slam impact
+s_drag               | [S] Bedrock Drag       | Greatsword tip dragging across a stone floor, grinding scrape with sparks
+s_uppercut           | [S] Heavenward Upcut   | Rising greatsword uppercut slash, upward whoosh with a heavy impact
+d_counter_slash      | [D] Counter X-cut      | Two quick crossing sword slashes, X cut, sharp metallic slices with a heavy impact
+d_counter_success    | [D] counter landed     | Counterattack success sting, punchy impact with a bright magical ring, game feedback sound
+f_titans_wrath       | [F] Titan's Wrath      | Colossal overhead greatsword smash creating a crater, huge explosive boom and flying debris
+t_omnislash_flurry   | [T] Omnislash slashes  | Rapid flurry of many sword slashes, fast whooshes and metal impacts, anime ultimate attack
+t_omnislash_finale   | [T] Omnislash finish   | Ultimate attack final explosion, massive cinematic boom with an energy burst and rumble
+z_overpower          | [Z] Overpower Surge    | Warrior power-up aura ignition, surging energy whoosh and a rising roar of flame
+space_dash           | [Space] dash           | Quick armored dodge dash, short fast whoosh with a light armor rattle

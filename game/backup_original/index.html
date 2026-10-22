@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eclipse Vanguard 2.5D — Breaker Class, Rocheste Hub & Vaelgor Raid</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOP NAVIGATION (ESSENTIALS ONLY) -->
+  <div id="top-nav-bar">
+    <div class="zone-banner hidden">
+      <div id="zone-banner-title">SANCTUM OF ROCHESTE</div>
+      <div id="zone-banner-sub"></div>
+    </div>
+
+    <div class="top-actions">
+      <button class="nav-btn amber" onclick="window.game.toggleModal('forge-modal')">
+        🔨 Forge [G]
+      </button>
+      <button class="nav-btn" onclick="window.game.toggleModal('coop-modal')">
+        🛡️ Co-op [P]
+      </button>
+      <button class="nav-btn" id="btn-toggle-ally-vfx" onclick="window.game.toggleAllyVfx()" title="Toggle Ally Visual Effects (VFX) ON/OFF for FPS performance (Ally character motions always remain visible)">
+        ✨ Ally VFX: ON
+      </button>
+      <button class="nav-btn amber" id="btn-practice-clock" onclick="window.game.toggleClockPracticeRoom()" title="Enter or Toggle the 35% HP Constellation Clock Practice Room immediately!">
+        🕰️ Practice Clock
+      </button>
+      <button class="nav-btn crimson" id="btn-practice-final" onclick="window.game.toggleFinalPhasePracticeRoom()" title="Enter or Toggle the End-Sequence Portal (10% HP Transition -> Sword Absorb -> 15% HP Final Clash)!">
+        🌑 Practice Final Phase
+      </button>
+      <button class="nav-btn" id="btn-practice-clash" onclick="window.game.toggleFinalClashPracticeRoom()" title="Jump straight into the 15% HP Final Clash End Sequence (Dark Teleport Trail -> Blue Circle [G] -> 6-Beat Rhythm QTE)!">
+        ⚔️ Practice Clash
+      </button>
+      <button class="nav-btn crimson" id="btn-start-raid-top" onclick="window.game.enterRaidGate(true)">
+        ⚔️ Enter Raid
+      </button>
+      <button class="nav-btn hidden" id="btn-return-hub" onclick="window.game.enterHub()">
+        🏰 Hub
+      </button>
+      <button class="nav-btn" onclick="window.open('boss_showcase.html', '_blank')" title="Open 2.5D Boss Showcase (Malakor &amp; Ignis Vane)">
+        🎭 2 New Bosses
+      </button>
+    </div>
+  </div>
+
+  <!-- ESSENTIAL BOSS HP & STAGGER BAR -->
+  <div id="boss-hud" class="hidden">
+    <div class="boss-hdr-row">
+      <div class="boss-name">VAELGOR</div>
+      <div class="boss-hdr-right">
+        <div class="boss-enrage-timer" id="boss-enrage-timer" title="Thaemine-style Enrage Timer — Defeat Vaelgor before Berserk!">⏳ 04:00</div>
+        <div class="boss-bar-x" id="boss-bar-count">x10</div>
+      </div>
+    </div>
+    <div class="boss-hp-track">
+      <div id="boss-hp-fill"></div>
+      <div id="boss-hp-text">85,000 / 85,000 (100%)</div>
+    </div>
+    <div class="boss-sub-bars">
+      <div class="bar-group stagger-main" title="Boss Stagger Gauge">
+        <span class="sub-bar-lbl">STAGGER</span>
+        <div class="stagger-wrap">
+          <div id="boss-stagger-fill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPACT RAID MECHANIC BAR -->
+  <div id="mechanic-hud" class="hidden">
+    <div class="mech-bar-wrap">
+      <div id="mech-bar-fill"></div>
+      <div class="mech-bar-text">
+        <span id="mech-bar-label">BLOOD-MOON BARRIER</span>
+        <span id="mech-bar-time">12.0s</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTY ROSTER (SHOWN ONLY IN CO-OP OR WITH AI COMRADES) -->
+  <div id="party-frames" class="hidden"></div>
+
+  <!-- MAIN 2.5D ISOMETRIC CANVAS -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- ESSENTIAL BOTTOM SKILL HOTBAR & HP / OVERPOWER -->
+  <div id="bottom-action-hud">
+    <div class="resource-bars-row">
+      <div class="res-track">
+        <div class="res-fill hp" id="hud-hp-fill"></div>
+        <div class="res-text" id="hud-hp-text">2400 / 2400</div>
+      </div>
+      <div class="res-track">
+        <div class="res-fill" id="hud-overpower-fill" style="background:linear-gradient(90deg,#0284c7,#38bdf8);width:0%"></div>
+        <div class="res-text" id="hud-overpower-text">OVERPOWER: 0%</div>
+      </div>
+    </div>
+
+    <div class="skill-bar-row">
+      <div class="skill-slot" id="slot-q" title="[Q] Spin Lunge" onclick="window.game.localPlayer.triggerSkill('q', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">Q</span>
+        <span class="skill-icon">🌀</span>
+        <span class="skill-name">Spin</span>
+        <div class="cd-overlay" id="cd-q"></div>
+      </div>
+      <div class="skill-slot" id="slot-w" title="[W] Earthbreaker (Instant after [A])" onclick="window.game.localPlayer.triggerSkill('w', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">W</span>
+        <span class="skill-icon">☄️</span>
+        <span class="skill-name">Leap</span>
+        <div class="cd-overlay" id="cd-w"></div>
+      </div>
+      <div class="skill-slot" id="slot-e" title="[E] Parry — Parries attacks to refresh &amp; empower [F]!" onclick="window.game.localPlayer.triggerSkill('e', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">E</span>
+        <span class="skill-icon">🛡️</span>
+        <span class="skill-name">Parry➔F</span>
+        <div class="cd-overlay" id="cd-e"></div>
+      </div>
+      <div class="skill-slot" id="slot-r" title="[R] Hold &amp; Release Crescent Wave" onclick="window.game.localPlayer.triggerSkill('r', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">R</span>
+        <span class="skill-icon">🌙</span>
+        <span class="skill-name">Crescent</span>
+        <div class="cd-overlay" id="cd-r"></div>
+      </div>
+      <div class="skill-slot" id="slot-a" title="[A] Iron Tackle — Primes instant [W]" onclick="window.game.localPlayer.triggerSkill('a', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">A</span>
+        <span class="skill-icon">🐗</span>
+        <span class="skill-name">Tackle</span>
+        <div class="cd-overlay" id="cd-a"></div>
+      </div>
+      <div class="skill-slot" id="slot-s" title="[S] Bedrock Uppercut" onclick="window.game.localPlayer.triggerSkill('s', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">S</span>
+        <span class="skill-icon">⚡</span>
+        <span class="skill-name">Uppercut</span>
+        <div class="cd-overlay" id="cd-s"></div>
+      </div>
+      <div class="skill-slot" id="slot-d" title="[D] Counter — Counters Blue Boss Patterns!" onclick="window.game.localPlayer.triggerSkill('d', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">D</span>
+        <span class="skill-icon">💠</span>
+        <span class="skill-name">Counter</span>
+        <div class="cd-overlay" id="cd-d"></div>
+      </div>
+      <div class="skill-slot" id="slot-f" title="[F] Titan's Wrath — Empowered by [E] Parry!" onclick="window.game.localPlayer.triggerSkill('f', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">F</span>
+        <span class="skill-icon">🌋</span>
+        <span class="skill-name">Wrath</span>
+        <div class="cd-overlay" id="cd-f"></div>
+      </div>
+      <div class="skill-slot ultimate" id="slot-t" title="[T] Omnislash: Extinction Cleave (3m Cooldown)" onclick="window.game.localPlayer.triggerSkill('t', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">T</span>
+        <span class="skill-icon">⚔️</span>
+        <span class="skill-name">Omnislash</span>
+        <div class="cd-overlay" id="cd-t"></div>
+      </div>
+      <div class="skill-slot identity" id="slot-z" title="[Z] Overpower Surge (Requires 100% Overpower Gauge)" onclick="window.game.localPlayer.triggerSkill('z', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">Z</span>
+        <span class="skill-icon">🔥</span>
+        <span class="skill-name">Surge</span>
+        <div class="cd-overlay" id="cd-z"></div>
+      </div>
+      <div class="skill-slot" id="slot-space" title="[Space] Evade / Wake-Up Roll" onclick="window.game.localPlayer.triggerSkill('space', window.game.mouseWorldX, window.game.mouseWorldY, window.game.getActiveBossTarget())">
+        <span class="skill-key">SPC</span>
+        <span class="skill-icon">💨</span>
+        <span class="skill-name">Evade</span>
+        <div class="cd-overlay" id="cd-space"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 1: VINDICTUS BLACKSMITH FORGE (FERGUS — ESSENCE & 5-SEAL PITY EXCHANGE) -->
+  <div id="forge-modal" class="modal-window hidden">
+    <div class="modal-hdr">
+      <h2>🔨 Fergus's Rocheste Forge — Boss Synthesis &amp; Seal Exchange</h2>
+      <button class="close-btn" onclick="window.game.closeAllModals()">✕ Close</button>
+    </div>
+
+    <div id="forge-feedback-banner">
+      "Vaelgor has a 10% chance to drop his Abyssal Essence—or bring me 5 guaranteed Eclipse Seals and I'll forge an Essence for you!"
+    </div>
+
+    <div id="forge-materials-bar"></div>
+
+    <div class="section-label">Equipped Gear, 2.5D Weapon Model &amp; 5-Seal Essence Redemption</div>
+    <div id="forge-equipped-card" class="equipped-box"></div>
+
+    <div class="section-label">Vindictus Boss Set Synthesis (Distinct 2.5D Greatsword &amp; Armor Models)</div>
+    <div id="forge-recipes-list"></div>
+
+    <div class="section-label">Your Equipment Arsenal (Click to Equip &amp; Swap 2.5D Weapon/Armor Appearance)</div>
+    <div id="forge-inventory-list"></div>
+  </div>
+
+  <!-- MODAL 2: CO-OP MULTIPLAYER & SOLO AI VANGUARD FALLBACK -->
+  <div id="coop-modal" class="modal-window hidden">
+    <div class="modal-hdr">
+      <h2>🛡️ Mercenary Co-op Lobby &amp; Solo AI Vanguard Config</h2>
+      <button class="close-btn" onclick="window.game.closeAllModals()">✕ Close</button>
+    </div>
+
+    <p style="font-size:12px;color:#cbd5e1;line-height:1.5">
+      Designed for <b>1–4 Player Co-op</b> via WebRTC (PeerJS) with full <b>Solo AI Vanguard Fallbacks</b>. In Solo Mode, AI Breaker Vanguards automatically help shatter Vaelgor's Cardinal Eclipse Greatswords, land counters, and flank for Back-Attacks!
+    </p>
+
+    <div class="section-label">Optional AI Vanguard Comrades (Off by Default)</div>
+    <div class="coop-row">
+      <button class="nav-btn amber" onclick="window.game.net.soloAiCount = 0; window.game.rebuildPartyRoster(); document.getElementById('coop-status').textContent = 'Status: Pure Solo Mode (0 AI Comrades)'">Solo 1v1 (0 AI Bots)</button>
+      <button class="nav-btn" onclick="window.game.net.soloAiCount = 1; window.game.rebuildPartyRoster(); document.getElementById('coop-status').textContent = 'Status: Duo Mode (1 AI Vanguard Comrade Summoned)'">Duo (+1 AI Comrade)</button>
+      <button class="nav-btn" onclick="window.game.net.soloAiCount = 2; window.game.rebuildPartyRoster(); document.getElementById('coop-status').textContent = 'Status: 3-Man Party (2 AI Vanguard Comrades Summoned)'">3-Man (+2 AI Comrades)</button>
+      <button class="nav-btn crimson" onclick="window.game.net.soloAiCount = 3; window.game.rebuildPartyRoster(); document.getElementById('coop-status').textContent = 'Status: Full 4-Man Raid (3 AI Vanguard Comrades Summoned)'">Full 4-Man (+3 AI Comrades)</button>
+    </div>
+
+    <div class="section-label">Performance &amp; Visual Clarity (FPS Optimization)</div>
+    <div class="coop-row">
+      <button class="nav-btn" id="btn-toggle-ally-vfx-modal" onclick="window.game.toggleAllyVfx()">
+        ✨ Ally VFX: ON (Click to Hide Ally Skill Effects for FPS)
+      </button>
+    </div>
+
+    <div class="section-label">PeerJS WebRTC Co-op Multiplayer</div>
+    <div class="coop-row">
+      <button class="forge-craft-btn" onclick="window.game.net.hostRoom(msg => document.getElementById('coop-status').textContent = msg)">
+        📡 Host Co-op Room
+      </button>
+      <input type="text" id="join-code-input" class="coop-input" placeholder="Enter Room Code (e.g. VAEL-7X9K)">
+      <button class="forge-craft-btn" onclick="window.game.net.joinRoom(document.getElementById('join-code-input').value, msg => document.getElementById('coop-status').textContent = msg)">
+        🔗 Join Room
+      </button>
+    </div>
+    <div id="coop-status" style="font-size:11.5px;color:#fde047;margin-top:6px">
+      Status: Pure Solo 1v1 Mode (0 AI Comrades — Summon AI Vanguards above if desired)
+    </div>
+  </div>
+
+  <!-- MODAL 3: RAID VICTORY & VINDICTUS SPOILS OF WAR -->
+  <div id="victory-modal" class="modal-window hidden">
+    <div class="modal-hdr">
+      <h2>🏆 LEGION COMMANDER VAELGOR VANQUISHED!</h2>
+      <button class="close-btn" onclick="window.game.closeAllModals()">✕</button>
+    </div>
+    <p style="font-size:12.5px;color:#cbd5e1">
+      The Obsidian Eclipse has been shattered! Check your <b>10% Abyssal Essence Roll</b> and guaranteed <b>Vaelgor's Eclipse Seal (1/5)</b> below:
+    </p>
+    <div id="victory-loot-summary"></div>
+    <div class="coop-row" style="justify-content:flex-end;margin-top:14px">
+      <button class="nav-btn amber" onclick="window.game.openModal('forge-modal')">
+        🔨 Open Fergus's Forge Now
+      </button>
+      <button class="nav-btn" onclick="window.game.enterHub(); window.game.closeAllModals()">
+        🏰 Return to Sanctum Hub
+      </button>
+      <button class="nav-btn crimson" onclick="window.game.enterRaidGate(true)">
+        ⚔️ Rematch Vaelgor
+      </button>
+    </div>
+  </div>
+
+  <script src="peerjs.min.js"></script>
+  <script src="camera_25d.js"></script>
+  <script src="breaker_25d.js"></script>
+  <script src="boss_vaelgor.js"></script>
+  <script src="crafting_vindictus.js"></script>
+  <script src="network_coop.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

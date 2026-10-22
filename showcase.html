@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  // SHOWCASE: localStorage writes go to an in-memory copy, so this page can never touch the real saves.
+  (function () {
+    const mem = new Map(), S = Storage.prototype, g = S.getItem, s = S.setItem, r = S.removeItem, c = S.clear;
+    const isLS = (o) => { try { return o === window.localStorage; } catch (e) { return false; } };
+    S.setItem = function (k, v) { if (isLS(this)) { mem.set(String(k), String(v)); return; } return s.call(this, k, v); };
+    S.getItem = function (k) { if (isLS(this) && mem.has(String(k))) return mem.get(String(k)); return g.call(this, k); };
+    S.removeItem = function (k) { if (isLS(this)) { mem.set(String(k), null); return; } return r.call(this, k); };
+    S.clear = function () { if (isLS(this)) { mem.clear(); return; } return c.call(this); };
+  })();
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chalice Animation Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- display fonts (fall back to Palatino/Georgia and Bahnschrift if offline) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Cabin:wght@400;500;600&family=Cinzel:wght@500;600&display=swap">
+  <link rel="stylesheet" href="game/style.css">
+  <link rel="stylesheet" href="game/ui_menus.css">
+  <link rel="stylesheet" href="game/enhance_hub.css">
+</head>
+<body>
+
+  <!-- TOP NAVIGATION -->
+  <div id="top-nav-bar">
+    <div class="zone-banner hidden">
+      <div id="zone-banner-title">SANCTUM OF ROCHESTE</div>
+      <div id="zone-banner-sub"></div>
+    </div>
+
+    <div class="top-actions">
+      <div class="nav-group hub-only">
+        <button class="nav-btn amber" id="btn-class-select" onclick="window.CharSelect.open()" title="Switch or customize characters (hub only)">
+          Characters
+        </button>
+        <button class="nav-btn amber" onclick="window.game.toggleModal('forge-modal')" title="Fergus's Forge  [G]">
+          Forge <kbd>G</kbd>
+        </button>
+        <button class="nav-btn" onclick="window.game.toggleModal('coop-modal')" title="Host or join a co-op room  [C]">
+          Co-op <kbd>C</kbd>
+        </button>
+      </div>
+      <div class="nav-group">
+        <button class="nav-btn" id="btn-toggle-ally-vfx" onclick="window.game.toggleAllyVfx()" title="Hide ally skill effects to save FPS (ally movement always stays visible)">
+          Ally VFX: ON
+        </button>
+        <button class="nav-btn" id="btn-armory" title="Character and armory  [I]">Armory <kbd>I</kbd></button>
+        <button class="nav-btn" id="btn-dps-meter" title="Damage meter  [H]">Meter <kbd>H</kbd></button>
+        
+      </div>
+      <div class="nav-group">
+        <button class="nav-btn crimson hub-only" id="btn-start-raid-top" onclick="window.game.openRaidSelect()" title="Choose a raid and difficulty">
+          Raid Select
+        </button>
+        <button class="nav-btn hidden" id="btn-return-hub" onclick="window.game.enterHub()">
+          Return to Hub
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESSENTIAL BOSS HP & STAGGER BAR -->
+  <div id="boss-hud" class="hidden">
+    <div class="boss-hdr-row">
+      <div class="boss-name">VAELGOR</div>
+      <div class="boss-hdr-right">
+        <div class="raid-clock hidden" id="raid-clock" title="Time in the fight"></div>
+        <div class="boss-enrage-timer" id="boss-enrage-timer" title="Defeat Vaelgor before he goes berserk!">⏳ 04:00</div>
+        <div class="boss-bar-x" id="boss-bar-count">x10</div>
+      </div>
+    </div>
+    <div class="boss-hp-track">
+      <div id="boss-hp-fill"></div>
+      <div id="boss-hp-text">85,000 / 85,000 (100%)</div>
+    </div>
+    <div class="boss-sub-bars">
+      <div class="bar-group stagger-main" title="Boss Stagger Gauge">
+        <span class="sub-bar-lbl">STAGGER</span>
+        <div class="stagger-wrap">
+          <div id="boss-stagger-fill"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPACT RAID MECHANIC BAR -->
+  <div id="mechanic-hud" class="hidden">
+    <div class="mech-bar-wrap">
+      <div id="mech-bar-fill"></div>
+      <div class="mech-bar-text">
+        <span id="mech-bar-label">BLOOD-MOON BARRIER</span>
+        <span id="mech-bar-time">12.0s</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTY ROSTER (SHOWN ONLY IN CO-OP OR WITH AI COMRADES) -->
+  <div id="party-frames" class="hidden"></div>
+
+  <!-- MAIN 2.5D ISOMETRIC CANVAS -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- Hub controls reminder -->
+  <div id="hub-hint">
+    <span><kbd id="hint-move">RMB</kbd> Move</span>
+    <span><kbd id="hint-atk">LMB</kbd> Attack</span>
+    <span><kbd>G</kbd> Forge</span>
+    <span><kbd>C</kbd> Co-op</span>
+    <span><kbd>I</kbd> Armory</span>
+    <span><kbd>M</kbd> Mute</span>
+    <span><kbd>Esc</kbd> Close</span>
+  </div>
+
+  <!-- ESSENTIAL BOTTOM SKILL HOTBAR & HP / OVERPOWER -->
+  <div id="bottom-action-hud"><!-- built by hud_skills.js (SkillHud.build) for the active class --></div>
+
+  <!-- MODAL 1: FERGUS'S FORGE -->
+  <div id="forge-modal" class="modal-window forge-window hidden">
+    <div class="modal-hdr">
+      <div class="hdr-title">
+        <div class="hdr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6-3 3-6-6zM12 8L4 16v4h4l8-8"/></svg></div>
+        <div>
+          <h2>Fergus's Forge</h2>
+          <div class="hdr-sub">Boss synthesis &amp; seal exchange</div>
+        </div>
+      </div>
+      <div id="forge-materials-bar"></div>
+      <button class="close-btn" onclick="window.game.closeAllModals()" title="Close (Esc)">×</button>
+    </div>
+
+    <div id="forge-feedback-banner">
+      "Vaelgor might drop his Abyssal Essence, or bring me 5 guaranteed Eclipse Seals and I'll forge one for you!"
+    </div>
+
+    <div class="forge-body">
+      <aside class="forge-side">
+        <div class="section-label">Equipped</div>
+        <div id="forge-equipped-card" class="equipped-box"></div>
+      </aside>
+      <section class="forge-main">
+        <div id="forge-tabs" class="forge-tabs"></div>
+        <div class="section-label" id="forge-synth-label">Synthesis</div>
+        <div id="forge-recipes-list" class="recipe-grid"></div>
+        <div id="forge-inventory-list" class="hidden"></div>
+        <div id="forge-reforge" class="hidden"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- MODAL 2: CO-OP LOBBY -->
+  <div id="coop-modal" class="modal-window coop-window hidden">
+    <div class="modal-hdr">
+      <div class="hdr-title">
+        <div class="hdr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.6-3 7.7-7 9.5-4-1.8-7-4.9-7-9.5V6z"/></svg></div>
+        <div>
+          <h2>Co-op Lobby</h2>
+          <div class="hdr-sub">1–4 players over WebRTC, or raid with AI comrades</div>
+        </div>
+      </div>
+      <button class="close-btn" onclick="window.game.closeAllModals()" title="Close (Esc)">×</button>
+    </div>
+
+    <div class="section-label">Play with friends</div>
+    <div class="coop-card">
+      <div class="coop-row">
+        <button class="forge-craft-btn" onclick="window.game.net.hostRoom(msg => document.getElementById('coop-status').textContent = msg)">Host a room</button>
+        <button class="nav-btn" id="btn-copy-code" title="Copy the room code">Copy code</button>
+        <button class="nav-btn" id="btn-copy-link" title="Copy a link that joins this room automatically">Copy invite link</button>
+      </div>
+      <div class="coop-row">
+        <input type="text" id="join-code-input" class="coop-input" placeholder="Room code (e.g. VAEL-7X9K)">
+        <button class="forge-craft-btn" onclick="window.game.net.joinRoom(document.getElementById('join-code-input').value, msg => document.getElementById('coop-status').textContent = msg)">Join</button>
+      </div>
+      <div id="coop-status">Not connected. Playing solo.</div>
+    </div>
+
+    <div class="section-label">AI comrades (solo only)</div>
+    <div class="coop-row seg">
+      <button class="nav-btn amber" onclick="window.game.net.soloAiCount = 0; window.game.rebuildPartyRoster(); document.getElementById('coop-status').textContent = 'Solo, no AI comrades'">Solo</button>
+      <button class="nav-btn" onclick="window.game.net.soloAiCount = 1; window.game.rebuildPartyRoster(); document.getElementById('coop-status').textContent = 'Duo: 1 AI comrade'">+1</button>
+      <button class="nav-btn" onclick="window.game.net.soloAiCount = 2; window.game.rebuildPartyRoster(); document.getElementById('coop-status').textContent = 'Party of 3: 2 AI comrades'">+2</button>
+      <button class="nav-btn crimson" onclick="window.game.net.soloAiCount = 3; window.game.rebuildPartyRoster(); document.getElementById('coop-status').textContent = 'Full party: 3 AI comrades'">+3</button>
+    </div>
+
+    <div class="section-label">Performance</div>
+    <div class="coop-row">
+      <button class="nav-btn" id="btn-toggle-ally-vfx-modal" onclick="window.game.toggleAllyVfx()">Ally VFX: ON</button>
+    </div>
+  </div>
+
+  <!-- MODAL 3: RAID RESULTS & SPOILS -->
+  <div id="victory-modal" class="modal-window victory-window hidden">
+    <div class="modal-hdr">
+      <div class="hdr-title">
+        <div>
+          <div class="vr-kicker" id="vr-kicker">CHALICE RAID CLEARED</div>
+          <h2>Vaelgor, Warden of the Eclipse</h2>
+        </div>
+      </div>
+      <button class="close-btn" onclick="window.game.closeAllModals()">×</button>
+    </div>
+    <div id="victory-results"></div>
+    <div class="section-label">Spoils</div>
+    <div id="victory-loot-summary"></div>
+    <div class="coop-row vr-actions">
+      <button class="nav-btn amber" onclick="window.game.openModal('forge-modal')">Open the Forge</button>
+      <button class="nav-btn" onclick="window.game.enterHub(); window.game.closeAllModals()">Return to Hub</button>
+      <button class="nav-btn crimson" onclick="window.game.enterRaidGate(true)">Rematch</button>
+    </div>
+  </div>
+  <!-- DEFEAT (Hard mode wipe) -->
+  <div id="defeat-modal" class="modal-window defeat-window hidden">
+    <div class="defeat-skull"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="6.5"/><path d="M9.5 16.5V20h5v-3.5M9.5 10h.01M14.5 10h.01"/></svg></div>
+    <h2>Your party has fallen</h2>
+    <p id="defeat-sub">Vaelgor still stands.</p>
+    <div id="defeat-results"></div>
+    <div class="coop-row" style="justify-content:center;margin-top:16px">
+      <button class="nav-btn crimson" id="defeat-retry" onclick="window.game.enterRaidGate(true)">Try again</button>
+      <button class="nav-btn" id="defeat-hub" onclick="window.game.enterHub()">Return to Hub</button>
+    </div>
+    <div id="defeat-note"></div>
+  </div>
+
+  <!-- Hard mode: shown while you are down -->
+  <div id="spectate-banner" class="hidden"></div>
+
+  <!-- SECRET: PRACTICE ROOMS ([P], hub, solo only) -->
+  <div id="dev-modal" class="modal-window dev-window hidden">
+    <div class="modal-hdr">
+      <div class="hdr-title">
+        <div class="hdr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/></svg></div>
+        <div>
+          <h2>Practice Rooms</h2>
+          <div class="hdr-sub">Jump straight into a late-fight sequence</div>
+        </div>
+      </div>
+      <button class="close-btn" onclick="window.game.closeAllModals()" title="Close (Esc)">×</button>
+    </div>
+    <div class="dev-list">
+      <button class="dev-row" id="btn-practice-clock" onclick="window.game.closeAllModals(); window.game.toggleClockPracticeRoom()">
+        <b>Practice Clock</b><span>35% HP: the sword-tell clock puzzle</span>
+      </button>
+      <button class="dev-row" id="btn-practice-final" onclick="window.game.closeAllModals(); window.game.toggleFinalPhasePracticeRoom()">
+        <b>Practice Final Phase</b><span>10% HP transition, sword absorb, then the final clash</span>
+      </button>
+      <button class="dev-row" id="btn-practice-clash" onclick="window.game.closeAllModals(); window.game.toggleFinalClashPracticeRoom()">
+        <b>Practice Clash</b><span>15% HP: dark trail, blue circle and the rhythm QTE</span>
+      </button>
+    </div>
+    <div class="dev-note">Only available in the hub with nobody connected. Press <kbd>P</kbd> or <kbd>Esc</kbd> to close.</div>
+  </div>
+
+  <script src="game/version.js"></script>
+  <script src="game/peerjs.min.js"></script>
+  <script src="game/camera_25d.js"></script>
+  <script src="game/clash_qte.js"></script>
+  <script src="game/breaker_25d.js"></script>
+  <script src="game/hammer_25d.js"></script>
+  <script src="game/reaper_25d.js"></script>
+  <script src="game/reaper_rig.js"></script>
+  <script src="game/arclight_25d.js"></script>
+  <script src="game/arclight_rig.js"></script>
+  <script src="game/unbound_25d.js"></script>
+  <script src="game/unbound_rig.js"></script>
+  <script src="game/boss_vaelgor.js"></script>
+  <script src="game/karok_clash.js"></script>
+  <script src="game/rebuke_boss.js"></script>
+  <script src="game/earth_burst.js"></script>
+  <script src="game/boss_motion.js"></script>
+  <script src="game/boss_transitions.js"></script>
+  <script src="game/flame_art.js"></script>
+<script src="game/boss_ignis.js"></script>
+<script src="game/boss_ignis_rig.js"></script>
+<script src="game/boss_hush.js"></script>
+<script src="game/boss_hush_pats.js"></script>
+<script src="game/boss_hush_rig.js"></script>
+<script src="game/boss_hush_stage.js"></script>
+  <script src="game/hud_skills.js"></script>
+  <script src="game/crafting_vindictus.js"></script>
+  <script src="game/network_coop.js"></script>
+  <script src="game/main.js"></script>
+  <script src="game/hub_scene.js"></script>
+  <script src="game/reaper_hud.js"></script>
+  <script src="game/arclight_hud.js"></script>
+  <script src="game/unbound_hud.js"></script>
+  <script src="game/identity_gauges.js"></script>
+  <script src="game/arena_env.js"></script>
+  <script src="game/cores.js"></script>
+  <script src="game/qol.js"></script>
+  <script src="game/difficulty.js"></script>
+  <script src="game/eclipse_art.js"></script>
+  <script src="game/raid_stats.js"></script>
+  <script src="game/dps_meter.js"></script>
+  <script src="game/damage_chart.js"></script>
+  <script src="game/status_icons.js"></script>
+  <script src="game/gear_icons.js"></script>
+  <script src="game/passives.js"></script>
+  <script src="game/reforge.js"></script>
+  <script src="game/accessories.js"></script>
+  <script src="game/tooltips.js"></script>
+  <script src="game/enhance_hub.js"></script>
+  <script src="game/weapon_glow.js"></script>
+  <script src="game/armory.js"></script>
+  <script src="game/raid_select.js"></script>
+  <script src="game/characters.js"></script>
+  <script src="game/ui_menus.js"></script>
+  <script src="game/settings_plus.js"></script>
+  <script src="game/comms.js"></script>
+  <script src="game/inspect.js"></script>
+  <script src="game/render_polish.js"></script>
+  <script src="game/showcase.js"></script>
+</body>
+</html>

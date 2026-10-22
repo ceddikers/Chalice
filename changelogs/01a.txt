@@ -1,0 +1,226 @@
+CHALICE 01a
+The first numbered version. Everything below is new since the last shared build (called Vaelgor before the rename). Older versions' notes live in the changelogs folder.
+
+VISUAL POLISH (all classes)
+- Smoother animation: every move now blends into the next instead of snapping between poses (skill starts and ends, swings, the Reaper's flurry cuts, Arclight's side swaps). Strikes are just as fast.
+- Characters read as one figure: a single dark outline around the whole body, the seams at knees and elbows closed, softer inner lines and one light direction (a lit edge top-left, shade bottom-right). Weapons keep their own glow.
+- Fast strikes leave an anime smear (Unbound leaves a short streak behind his palm) instead of the old blade trail, and each class sheds its own particles: ice shards (Breaker), grit and embers (Gravebreaker), blood mist (Reaper), plasma sparks (Arclight), ink streaks (Unbound). Hits flash a sharp impact star.
+- Less clutter: effects that used to spawn every frame (afterimages, drag sparks) are capped, and ultimates no longer throw a dozen ground cracks that wipe each other out.
+- The "Ally VFX" switch also hides other players' smears and particles.
+
+UNBOUND (NEW CLASS, 5th)
+- Someone far too strong who is holding back. Looks like a bored student: loose uniform, undone tie, a jacket hooked on one shoulder. The only hint of power is the pair of limiter bracers on his forearms, whose cracks light up as his Restraint builds.
+- RESTRAINT: dodging through a hit, countering and landing skills build it, a slow trickle keeps it from ever being dead, and getting hit costs some. At full, [Z] Release lets a little of it out: a hand lifted and something enormous comes out. What comes out depends on how you built the meter, and most of the class's damage is in it.
+- Kit: Q Flick, W Afterimage Step, E Palm Pulse (a front break-damage skill that snaps to the nearest weak point), R Press, A Instant Step, S Rebuke, D Catch (the counter), F Backhand, T Toss Around.
+- T TOSS AROUND: you must be right next to the boss. He throws the jacket off, grabs the boss, powers up and tosses it up and down five times, the last one hardest. Untouchable the whole time. Does not work on a boss in the middle of a mechanic.
+- S REBUKE: a swat that works on the close-range swings of the boss's normal attacks, pressed just before the blow lands. It never works on mechanics. A hit stops the attack mid-swing and leaves him briefly recoiling; a miss locks the key for a moment.
+- CAREFUL: once he has been rebuked he is on guard, for every player, shown only as a status icon under his bars. First he shrugs rebukes off, then for a while a rebuke only blocks the one blow it was aimed at (the attack carries on), then it works again. Always the same lengths. Co-op: the host decides, everyone sees the stop and the icon.
+- Own gear: Plain Limiter Cuffs, Vaelgor's Obsidian Limiters, Sovereign's Black Sun Shackles (forge recipes, enhancement shine sits outside the cuffs). Own uniform colours in the character creator (uniform, skin, hair, eyes and tie).
+- Balance numbers are first-pass guesses.
+
+ULTIMATES CAN'T HOLD A BOSS IN A MECHANIC
+- Every [T] that pins the boss in place (Breaker's Omnislash, Gravebreaker's Worldbreaker, Reaper's Verdict, Arclight's Orbital Lock, Unbound's Toss Around) now bounces off a boss that is in the middle of a mechanic: no hold, no damage, a short recoil. If it touched the boss, half the cooldown comes back; if it missed completely, the whole cooldown is spent. Reaper's Voidform [T] is not affected. No damage numbers changed.
+UNBOUND REWORK
+- Ability names no longer show under the skill icons (all classes); they stay in the tooltips.
+- Q Flick is now just a white line that cuts what it crosses, with no projectile after it.
+- W Afterimage Step is a new move: a step forward, then he streaks to your cursor (up to about 330 away) in a trail of afterimages, or past the boss if your aim runs through it. He keeps facing the way he ran, he never turns round. Only when he passes through the boss does it hurt: once he lands, a flurry of nine afterimage punches hits the boss on different parts of its body, the last one hardest.
+- E Palm Pulse is a flat-handed smack (impact burst, no beam).
+- F Backhand now winds up across the body to the left and sweeps out to the right, closes the distance first and keeps facing the boss until the swing is committed.
+- S Rebuke now understands four answers from a boss (stopped, blocked, shrugged off, missed); a block gives half the Restraint of a stop.
+- Gauges: the Unbound's cuff is now a plated limiter bracer whose seams loosen and light up, and the Gravebreaker's dial is a riveted brass-and-iron gauge with forged blocks. Every identity gauge is centred in the panel with the [Z] slot on its left.
+UNIQUE IDENTITY GAUGES
+- The widget next to the [Z] slot is no longer a plain bar for most classes. Breaker: a greatsword that heats from hilt to tip (gold and draining during Surge). Gravebreaker: a momentum dial with three arcs and a needle (white-hot in Overload). Arclight: a hexagonal reactor core, twelve cells light around the rim. Unbound: a cracked limiter cuff whose cracks light in the winning Release's colour, with a thin strip under it for the mix. Reaper keeps the blood sphere. Fracture, Broken, the Arclight mode badge and all other readouts are unchanged.
+
+UNBOUND
+- Toss Around power-up: after the grab he lets go and powers up with feet planted wide, both fists at the ribs, elbows flared, gritted teeth and slammed-down brows, rings of force rolling off him, then picks the boss up again to toss it.
+
+LONGER STRIDES (all classes)
+- Legs and steps are longer: a bigger stride, a higher knee lift and a slightly slower cadence (the feet slide even less on the ground).
+STANDING AND WALKING (all classes)
+- Everyone used to stand in a permanent half-crouch because the legs were longer than the distance from hip to floor. The legs are now the right length and idling or walking lifts the body to a natural standing height (attacks keep their own crouches).
+- The walk cycle is faster and tighter: boots no longer glide forward while planted (they slid at about 60% of your speed, now about 30%), and feet follow the gait with less lag.
+- UNBOUND: attacks are crisper: a short wind-up, a snap to the strike pose exactly on the hit, a brief hold, then a quick recover. His jacket is a loose drape instead of a slab, and the arm and leg joints are smooth tubes instead of circles.
+LESS POPUP TEXT
+- The game no longer floats words over your head for things the skill bar, status icons and gauges already show: the class name when you switch, SYNC, CHAIN, SABER / BEAM, SOLAR CANNON READY, MARK BURST, MOMENTUM +1, BULWARK, OVERLOAD, BROKEN on the boss, VOIDFORM, "Q ready", ROAR, HOIST COUNTER, SHATTERPOINT, ADRENALINE MAX, and the boss's flavour announcements (THE ECLIPSE AWAKENS, ECLIPSE JUDGMENT, PALE ECLIPSE SANCTUARY, and similar).
+- Still shown: damage numbers, results (PARRY, PERFECT, MISSED, SHATTERED, STAGE n while charging a smash), reasons a skill did not fire, loot and gold, revives, Second Wind, and anything that tells you what to do in a mechanic (counters, the typing prompt, clash results).
+- Settings > Interface > Extra popup text brings all of it back if you want it.
+
+ARCLIGHT TOOLTIPS
+- In Saber mode the skill tooltips now show only the blade skill (name, text and tags), and in Beam mode only the beam skill. They used to show both modes in one block. The Destructive tag follows the mode too. The character screen lists the blade skills and the beam skills separately as well, and the Arclight passive text is about a third shorter with the same information.
+
+NO MORE ALT-TAB FREEZE
+- The game used to stop completely when its window was hidden, covered or minimised (browsers stop the frame timer), which also froze you for your co-op friends. It now keeps running in the background: a background timer steps the game and the network, and the screen is only redrawn now and then to save power. Coming back is instant. Opening the pause menu still pauses as before.
+
+GET-UP ROLL COOLDOWN
+- While your get-up roll (Space when knocked down) is recharging, a "Get-Up Roll" icon with a draining bar and a seconds counter shows with your other status icons. It disappears the moment the roll is ready, and armor that shortens the cooldown is counted. For now it uses your class's own [Space] evade icon.
+
+ACCESSORIES: DROPS, SEVEN NEW ONES, FIXES
+- DROPS: every filler core in Vaelgor's death burst now has a 6% chance (3% on Normal) to be an accessory, up to 2 per clear. It is a random accessory with a rarity from its own table: Uncommon 45%, Rare 30%, Epic 20%, Legendary 5% (never Common). A Legendary glows and announces itself like the Abyssal Essence. Dropped pieces go to your inventory and show in the results screen with their rarity colour.
+- NEW: Quarry Ring (+20% break damage), Finisher's Ring (+12% damage while the boss is under 35% health), Adrenaline Band (every skill builds a stack, 6 max for 7s: +2% damage each, +10% crit at 6), Second Wind Locket (once per fight a lethal hit leaves you at 1 health and untouchable for 2.5s; it cannot stop instant-wipe mechanics), Shatterpoint Pendant (boss staggered: 8s of +10% damage and +10% cooldown recovery), Mender's Sigil (a boss part breaking heals you 10% max health), Fortune's Eye (+25% accessory drop chance and +2.5% Abyssal Essence chance on every core).
+- CHANGED: Keeper's Ring now makes Eclipse Seal cores have a 50% chance to hold 2 Seals (it used to guarantee a Seal on Normal).
+- FIX: The Wrathstone Ring's gauge gain now works for every class. Before, the ring did nothing for the Reaper or the Arclight. The Gauge gain stat line you can roll on accessories got the same fix.
+- FIX: a Max health line now heals you for the health it adds when you put the accessory on.
+- You can own as many copies of an accessory as you like (the old "own each once" rule is gone). The same passive worn twice does not stack, and the forge, armory and tooltips now say so. The raw passive name that showed in forge tooltips is gone.
+- Base crit chance is now 20% (was 25%). Crit chance above 100% is no longer wasted: the excess becomes crit damage at double value (101% crit = 100% crit and +2% crit damage).
+
+GRAVEBREAKER
+- [F] Bonk Barrage: you can now RIGHT-CLICK to leave the barrage at any time (a swing already in flight still lands, then you walk away). Leaving early costs 70% of the cooldown; leaving during the finisher recovery costs the normal cooldown. Co-op friends see you leave. Before this the only ways out were finishing the bonks, waiting 1.5 seconds without pressing, or dashing.
+
+FRONT AND BACK SKILLS (all classes)
+- The front and back damage bonus no longer applies to every hit. Only some skills are FRONT skills or BACK skills (shown as a Position line in the tooltip); every other hit does the same damage from any side.
+- FRONT skills: +35% damage and +45% stagger when they land from the boss's front (neutral from the side or back). Only front hits (and the other strong hits) can crack the shoulder plates.
+- BACK skills: +25% damage, +30% crit chance (was +15%) and +15% stagger when they land from behind (neutral from the front or side). Back hits never crack the shoulder plates.
+- Front: Breaker W Earthbreaker, S Bedrock Uppercut, F Titan's Wrath; Gravebreaker R Charge Smash, F Bonk Barrage; Reaper (Voidform) R Abyss Cataclysm; Arclight R Zenith Dive / Convergence Burst, F Blade Storm finisher / Overcharge Flare, Z Solar Cannon finale.
+- Back: Reaper Q Reaping Arc / Spin Stomp, E Lethal Spin, R Eclipse Harvest, (Voidform) Q Maw Lunge; Arclight Q Cross Slash / Lance Shot.
+- To make up for the lost bonus every hit of every class now does 6% more damage.
+
+DESTRUCTIVE TAGS (all classes)
+- The Destructive tag in every tooltip now matches what the skill really does (a skill is Destructive if any of its hits can crack the shoulder plates). Fixed: Arclight Q and E, Gravebreaker Q and A, Reaper Q E F (and in Voidform Q, D and F) were showing "No" while their heavy hit does break parts.
+- BACK skills never crack the shoulder plates, so they show Destructive: No.
+- Reaper Voidform skills now show their real 25 second cooldown; a leftover unused armor entry was cleaned up.
+
+ARCLIGHT: FLEXIBLE CHAIN & BEAM LOCKS (replaces the older Chain / Lock lines further down)
+- The chain is no longer a strict Q-W-E-R. ANY different attack skill (Q, W, E, R, S or F, in either mode) cast within 3 seconds of the last adds a link: +3% damage per link, up to 5 links (+15%). Casting the same skill again adds nothing. Swapping modes with [X] keeps the chain going, so a blade combo can flow into a beam combo. While the chain is alive every attack skill that is ready (and is not the one you just used) glows on the skill bar; the status line and the Chain icon show the links.
+- BEAM: [R] Convergence Beam is now EMPOWERED by your Locks (+10% each, was +20%) and no longer uses them up. [F] Overcharge Beam is the eraser: it uses every Lock for +10% each (was +15%) and a wider beam. Best order: R first, then F.
+- Skill tooltips and the passive text were updated to match.
+- Solar Cannon hits for 50% more (0.75 per tick, finale 3.6) so it is worth the 4.5 seconds it takes.
+
+LOOT
+- Abyssal Essence is rolled core by core: every filler core of the boss's burst has a 7.5% chance on Hard (3.75% on Normal) to be the Essence, and the first core to hit takes it so no other core can. That is about a 32% chance per Hard clear (about 50% on a first clear, which has extra cores) and 9% on Normal. The Eclipse Seal core never carries it. Each player rolls their own, and a player gets at most ONE Essence per run: a Mythic pauldron core that already gave it turns the burst's Essence roll off, and a second Mythic pauldron core becomes an Eclipse Core. The Eclipse Wings work the same way (one core at most, about 1% per clear).
+NEW ICONS
+- Painted icons for all weapons (12), the three armor sets, and 9 new status icons, shown in the forge shop, the armory and the inventory.
+- New buff/debuff icons: Bulwark, Voidform, Umbral Shield (Reaper's shield now uses it instead of the generic one), Crimson Eclipse (untouchable while the bomb charges), Sync, Chain (with stack count), Solar Cannon Ready, and on the boss: Marked (Blades marks) and Locked On (Beam locks, same count).
+
+CHANGELOG - latest update
+
+ARCLIGHT SOLAR CHARGE
+- The charge fills a lot slower: it now takes a full blade rotation (Q W E R) AND a full beam rotation (Q W E R), plus a bit of extra fighting (autos, S, F), to reach 100%.
+
+GRAVEBREAKER
+- [W] Bulwark has its painted icon.
+- [X] Overload now only resets [R] and [F] (it used to reset every skill; W and the rest are no longer refreshed).
+- [W] Bulwark's shield is lowered from 50% to 25% of max HP (still 10s, +30% damage).
+FINAL CLASH
+- FIX: the clash could not be won any more. Since the bar had to be completely full, and the boss's push-back is applied every frame before the win check, the bar was never seen full. The press that fills the bar now wins it.
+
+SAVE SAFEGUARDS
+- The game now asks the browser to keep your data, keeps a second copy of your characters (and restores it by itself if the main entry is ever empty), and Settings > Data shows where your characters are saved, how many there are and when you last backed up.
+- Warnings: if this copy is opened from a different place than before and has no characters, it tells you why and where to restore; it also reminds you to save a backup if you have not in 5 days.
+
+SAVES
+- New README_SAVES.txt in the zip: why characters can seem to vanish when a new version is opened from a different folder/port, and how to keep them (Settings -> Backup -> Export before, Import after, or unzip over the same folder).
+
+REAPER
+- Voidform [T] Crimson Eclipse: you are untouchable for the whole cast (all your remaining energy goes into the bomb). When the cast is over the form ends and you are back to human.
+- Voidform [W] Hellspike Row no longer holds you in place (drop-and-forget like the Rift Maw): a jagged fissure burns along the line first, then nine fangs erupt one after another, each leaning, glowing with a molten core and sparks, growing toward the last, which is a great fang with a flash.
+- Human and Voidform no longer share cooldowns: a fresh set of Voidform skills each time, and your human skills keep cooling in the background while you are transformed. Every Voidform skill now has a 25s cooldown (once per Voidform, which lasts about 22s); the old faster cooldown ticking in Voidform is gone.
+
+ARCLIGHT
+- All painted skill icons are in (Blades, Beam, Solar Cannon, Mode Swap, Evade).
+- Blades and Beam cooldowns were already separate for Q W E R A S D F (checked again: casting in one mode never touches the other). Still shared: T, Z, X and the evade.
+- Skill tooltips updated (12 missiles, Orbital Lock no longer uses charge).
+
+VAELGOR (PACING)
+- More breathing room between his patterns, in every phase including the final one: the pause before he picks his next pattern is now at least 1.8s on Normal (was 1.1s) and 1.5s on Hard (was 0.8s). Pattern lengths and damage are unchanged.
+
+VAELGOR (HARD) / BREAKER
+- The purple spinning line now ALWAYS traps you in the Abyssal Chains when it hits, even when you are the only one alive. Allies free you by hitting the chains; on your own the chains wear through by themselves after about 4 seconds (before, playing alone, it just did 25% max HP damage).
+- Breaker auto attack: removed the queueing. The next swing no longer starts early (the last 0.14s of the previous swing); it begins once the current swing has finished. Skills can still cancel an auto after its hit lands.
+
+ARCLIGHT NEW IDENTITY: SOLAR CANNON (replaces Core Heat; ignore the old Core Heat lines further down)
+- Core Heat is gone: no Hot / Critical damage bonus, no extra damage taken, no overheating and no forced vent.
+- Everything you do now fills the SOLAR CHARGE (0-100%). A full blade rotation (Q W E R) into a full beam rotation fills it. It only drains slowly (after 8s of not fighting, 3% a second), so it carries through a combo. The suit warms from blue to gold as it fills and flashes "SOLAR CANNON READY" at 100%. A clean [D] parry also feeds it.
+- [Z] SOLAR CANNON (needs 100%, uses it all): you hop back, the cannon docks if you were in blades, your free hand clamps onto the cannon arm, the camera pulls back while sparks stream into the muzzle, then you fire a gigantic beam that burns for 2 seconds (a hit every 0.1s, about 17 damage-coefficients in total, then a big finale blast). It follows your cursor slowly, you are armoured while it fires, and the recoil pushes you back a little. Works in co-op (allies see the charge and the beam).
+- [T] Orbital Lock no longer uses up your charge (it is a flat 1.25x now, no Overdrive).
+
+ARCLIGHT COOLDOWNS & LOCK-ON
+- Skill cooldowns are 3.5s longer in BOTH modes, so swapping with [X] matters more: Q 5.5 -> 9s, W 8 -> 11.5s, E 8 -> 11.5s, R 14 -> 17.5s, S 12 -> 15.5s, F 14 -> 17.5s. (A, D, Z, T unchanged.)
+- BEAM [W] Lock-On Strike is rougher: the six missiles now pop out of the backpack almost together, each in its own direction and height, hang for a beat, and then all swing onto the boss at the same time (before: a neat stream from two tubes).
+
+- BEAM [W] Lock-On Strike now launches 12 missiles instead of 6, each hitting for half as much (same total damage and same Lock gain). They burst out in a faster, wider spray with launch sparks and small shock rings, then corkscrew onto the boss in a weaving spiral that tightens as they close in.
+
+ARCLIGHT BLADE LOOK
+- Hovering/gliding no longer leaves big ghost silhouettes behind; only small trailing sparks and the thruster spray.
+- FIX: while gliding, a long glowing "laser bar" followed the Arclight around. It was the dash-ghost's greatsword line (a leftover from the Breaker's afterimage); Arclight ghosts no longer draw it.
+- The wrist blades are now sharp triangles of light (wide where they leave the wrist, straight edges narrowing to a point, a bright core ridge) instead of thin sticks, and a bit longer. The forearm now has an angular leaf-shaped vambrace that houses them.
+
+ARCLIGHT PERFORMANCE
+- Beam [R] Convergence Beam no longer lags: its five lasers used to fire five separate hits every tick (sparks, numbers and sounds each time); they are now ONE hit per tick with the same total damage. The finale has lighter effects (fewer floor cracks, shorter hitstop) and thin beams skip their outer glow layer. Every other Arclight skill was frame-timed in both modes (about 2 ms a frame, no spikes).
+- Crescent Wave tooltip cooldown corrected to 12s.
+
+NEW CLASS: ARCLIGHT (tech scout: wrist-blades, a drone that docks as a cannon, thruster suit; inspired by Lost Ark's Scouter)
+- HOVERING: the suit no longer walks. It floats about a hand's width off the floor on its thrusters (it never blocks movement or attacks), legs hanging loose and trailing a little as you glide, the whole body rolling into the direction of travel. There is a hover light on the floor, thruster spray under the boots, wings that stay half open and flare when you glide, and heat sparks when the suit runs Hot. The animation poses were reworked to match (no stride bob, a lean into the glide).
+- BEAM [R] is now Convergence Beam (laser focused, replacing the missile barrage): five emitters (both shoulders, both wing tips and the cannon) open up, a lens ring collapses onto your cursor, then a fan of lasers sweeps together and merges into ONE blinding beam with a blast at the focal point. Each Lock on the boss adds +20% to the burst. Slight camera zoom while it charges.
+- Cooler effects: the blades ignite with a flash and sparks at each wrist, beams burn a glowing scorch line into the floor (Lance, Sweep, Overcharge, Convergence), big beams have flares at the muzzle and the impact, lens rings collapse into the cannon while a beam charges, and boosted dashes leave afterimages.
+- Look: a sleek mech frame: masked helm with glowing visor slits and swept horn-antennae, a broad plated chest with a glowing core, big angular shoulders (the left one carries a rotor ring), bulky plated legs, thruster boots, and blade-wings on the back. The creator lets you pick the eye & core glow colour; the frame follows your armor tier.
+- Twin wrist-blades, RETRACTED by default: nothing shows past the fists until you use a Saber-mode attack, then a shorter blade slides out of each wrist (about 0.3s after the attack they tuck away again). Beam mode keeps them in and your drone docks onto your right forearm and becomes the cannon. [A] is a thruster flip in Saber mode.
+- Armor tiers: T1 silver-white with sky-blue trim, T2 black-navy with violet trim and long serrated wings, T3 pearl with rose trim, floating energy wings and a halo. Blades: cyan / violet-crackling / rose-gold, getting a touch longer per tier.
+- Core Heat: everything builds Heat. Hot (40%+) = +15% damage, Critical (80%+) = +35% damage but +25% damage taken, 100% = the core overheats (forced vent, then 3s slow). Heat cools when you stop attacking.
+- [X] swaps SABER (melee) and BEAM (ranged, mouse-aimed). The first skill after a swap is Synced (+30%). Every skill key has a saber version and a beam version; the skill bar follows the mode.
+- BLADES kit, built to chain: Q -> W -> E -> R flows into itself. Q Cross Slash (lunges onto the target, a cut from each blade) -> W Wing Rush (rockets THROUGH the target to its far side, turning to face it again) -> E Rotor Cyclone (hover and spin both blades, slam, plasma ring) -> R Zenith Dive (blast off, hang, dive crossed blades first, untouchable until you land). Each skill cancels into the next the moment its last hit lands, and a press made a hair early is buffered.
+- Marks: Q, W, E, S and the auto finisher leave Marks on the boss (up to 5, shown as glowing X's around it). R detonates them for +20% damage each. A Chain (Q, W, E, R in order, each within 2.5s) gives +10% damage per link and +30% on the full chain; the blades grow with the chain and the next skill in line lights up on the bar.
+- Blades and Beam now have SEPARATE cooldowns (Q W E R A S D F): swapping modes always hands you a fresh set, and the mode you left keeps cooling down. T, Z, X and the dodge are still shared. Marks and Locks carry over between modes.
+- BEAM kit now has its own through-line, Lock-On: your cannon shots lock onto the boss (shown as targeting reticles). The auto burst (now short range, about 300 units in front of you, semi-melee instead of crossing the arena), Lance Shot (+2), Sweep Laser, Scatter Shot and the Sentry build Locks; R Missile Barrage spends them (+2 missiles and +12% damage per Lock) and F Overcharge Beam spends them (wider beam, +15% damage per Lock). Beam skills also cancel into each other once their shot has gone off, so Q -> E -> R flows.
+- BEAM [W] is now Lock-On Strike (the Sentry Drone is gone): your scouter locks onto the boss, with a slight camera zoom, lock-on beeps and a reticle that closes in and flashes red. Then two launch tubes swing up out of your backpack and six homing missiles climb out, curve round and home in on the boss (each hit adds a little Lock). It needs a boss to lock onto and costs no cooldown if there is none. (The missiles of [R] still rain on your cursor; [W] is the guided one.)
+- S is now Crescent Wave (a wide crescent of light along your cursor that Marks what it hits), replacing the grapple wire. Auto = four cuts, right/left/right then a cross from both blades. F Blade Storm = five alternating cuts and a big cross. D Cross Guard.
+- BEAM kit: Q Lance Shot, W Sentry Drone, E Sweep Laser, R Missile Barrage now launched from shoulder pods that pop open, S Scatter Shot, F Overcharge Beam.
+- Slash effects are sized to the short blades now.
+- [Z] Core Vent: dump your Heat in a burst around you. [T] Orbital Lock: the drone calls a satellite down, the boss is held, beams rain, finale (Critical = Overdrive).
+- The suit's light follows your Heat (tier colour -> amber -> red) and a row of battery cells on the belt fills as you heat up.
+- New weapons in the forge (Tier 2 Photon Saber, Tier 3 Black Sun Lightblade), co-op sync (mode + heat), character creator entry, damage chart, armory, inspect.
+
+ALL CLASSES (FEEL)
+- Skill input buffer: a skill pressed up to 0.35s early (while the last move is finishing) now fires the instant you can act, instead of the press being eaten. Covers Q W E A S (R, F and D are left out on purpose; the Reaper's Q has its own).
+- Cancel windows: once the hit of an auto-attack lands you can start a skill straight away (Breaker, Gravebreaker, Reaper). The Breaker can also cancel the recovery of its W slam, S uppercut, A tackle and S drag after the hit; the Gravebreaker can cancel [A] Shoulder Ram, [W] Bulwark and [S] after the hit.
+
+ALL CLASSES
+- Movement speed is about 12% faster for every class (Breaker 172 -> 192, Gravebreaker 156 -> 174, Reaper 176 -> 197, Voidform 214 -> 240), so outrunning attacks is a real option.
+
+VAELGOR (STUCK PURPLE CIRCLE)
+- The purple ring/glow that sometimes stayed around him (and made the game laggy, no damage) was the travel ward he gets while leaping to the centre before the sword-bait and clock mechanics. If it got stuck on a client, nothing ever ended it. It now clears itself within about 2 seconds whatever happens.
+
+VAELGOR (FINAL PHASE)
+- The teleporting triple-cut ("Astral Trinity Cleave") is now a counter move: he coils with the blue counter halo for about 0.9s first. Counter it with [D] and he is staggered (+38% stagger bar, short kneel) instead of doing the combo; miss it and the full teleport-and-cut combo follows. The combo is also slightly slower overall (2.85s -> 3.3s).
+
+VAELGOR (HARD)
+- The purple spinning line on the sword-bait mechanic now really holds you in the Abyssal Chains (before, the root was wiped the same frame it landed, so nothing happened). Allies free you by hitting the chains. Playing alone, with nobody to free you, the line hurts (25% max HP) instead.
+- The Horizon clock mechanic is back to how it was (Hard: first miss = half max HP, second miss = death).
+
+GRAVEBREAKER
+- Every move is aimed by the mouse; nothing snaps onto the boss any more.
+- [W] is now Bulwark: slam the hammer down for 10s of +30% damage and a shield worth 50% max HP (fades with the buff). 30s cooldown. (The hammer throw is gone; it still uses the old icon until you have a new one.)
+- [F] and [R]: while charging/swinging you can no longer be knocked back, knocked up, knocked down or turned around by any hit (cataclysm included), but you still take the damage.
+- [F] and [R]: you are planted while the swing is committed - no pushback from hits (cataclysm-tier hits still launch).
+- [F] Bonk Barrage: the bonk now lands where the centre of the hammer meets the ground, further out than before (impact 58 -> 98 units in front, hit radius 108 -> 118), including its effects.
+- Overload: activating it resets all skill cooldowns (Q W E R A S D F and dodge). T is not reset.
+- Final Clash (tug-of-war): now only succeeds when the bar is completely full (before, ~98% counted).
+
+REAPER
+- Q chain: Q now cuts the recovery of the W / E / R that reset it, and a Q press made a moment early is buffered (0.5s), so Q-W-Q-E-Q-R-Q flows smoothly.
+- Empowered Q (Spin Stomp): +20% damage.
+- Voidform E (Rift Maw) is now drop-and-forget: no channel, you can move the instant you cast it and the maw snaps shut on its own. It is drawn flat on the floor, under the boss, so it never covers what it hits.
+- [R] Eclipse Harvest: you are invulnerable the whole way, up through the landing.
+- Crimson Eclipse (Voidform T) has a much bigger build-up (blood sigil, inward blood streaks, corona, spiked halo, lens flare) and a comet-trail throw, drawn with a few batched paths to stay cheap.
+- Reaper's Verdict (human T) is flashier: a judgement sigil burns into the floor under the bound boss, every cut leaves a bright arc, and the final slam has a bigger shockwave, cracks and light.
+- Auto attack (human form): damage reduced slightly.
+- T in Voidform (Crimson Eclipse): the Voidform timer is frozen during the charge and throw, so the cast can't be cut off. When the cast finishes you automatically return to human form.
+
+CO-OP
+- Leaving a raid: your character now stays standing as a stand-in (the boss and mechanics ignore it) until you reconnect. When you rejoin, the stand-in is removed and you come back with the HP you left with and your damage meter / damage chart intact. A fresh raid or the hub clears any stand-ins.
+- A leftover connection from a quick rejoin can no longer delete the new one.
+
+FIXES
+- Black screen: the camera could get stuck on an invalid value (e.g. minimising/resizing the window or an unseen mouse) and never recover. It now sanitises its inputs and snaps back by itself. A single bad frame can also no longer blank the canvas.
+
+EARLIER (since last zip)
+- New class: Reaper (chain scythe, Umbral Shield, Voidform, blood sphere).
+- New character creator with class descriptions and painted skill icons.
+- Vaelgor: online getsuga-spam fix, Spirit Bomb QTE timing, clock mechanic visibility/timing, Hard-mode clock punishment.
+
+
+HUSH (NEW RAID, SOLO)
+- A third raid, in a moonlit nursery. Solo only: it can't be entered while in a co-op lobby, and no allies or bots come along. Normal and Hard.
+- Fully voiced, with her own music.
+- New materials: Porcelain Shards, Lullaby Thread and the rare Music-Box Heart.
+- TIER 4 weapons, the Lullaby set, one per class, forged at the Forge. Forging one uses up that class's Tier 3 weapon and keeps a third of its enhancement level.
+- Moon Mobile: a very rare Hard-only cosmetic for the wings slot.

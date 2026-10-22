@@ -1,0 +1,64 @@
+Ignis Vane voice lines. Voice: "Ignis Vane Real" (Eleven v4). File = ignis_<key>.mp3
+key | text sent to ElevenLabs
+
+intro | [slow][amused][looking down on them] Oh? An audience. How... underdressed.
+open_01 | [cool][condescending][echoing] Try to keep up, darling.
+open_02 | [mocking][sweetly cruel][smirking] Front row seats. Lucky you.
+open_03 | [bored][disgusted][imperious] Do try not to bleed on the stage.
+open_04 | [commanding][theatrical][booming] Places, everyone!
+taunt_01 | [unimpressed][cold][scornful] Is that all? I've had warmer receptions.
+taunt_02 | [deadpan][bored][dismissive] Yawn.
+taunt_03 | [distracted][disinterested][examining her nails] Hold on, I chipped a nail.
+taunt_04 | [grand][regal][self-satisfied] You may applaud now.
+taunt_05 | [dismissive][judging][cold] Mm. Adequate.
+hit_01 | [delighted][cruel][laughing softly] Encore!
+hit_02 | [teasing][menacing][whispering] Too slow, sweetie.
+hit_03 | [cold smile][sadistic][quiet] Did that sting? Good.
+down_01 | [triumphant][imperious][final] And SCENE.
+down_02 | [satisfied][cold][judging] One less critic.
+down_03 | [gleeful][mocking][theatrical] Exit, stage left!
+counter_01 | [outraged][furious][shocked] How DARE you!
+counter_02 | [offended][indignant][sharp] That was MY line!
+counter_03 | [icy][clipped][contemptuous] Rude.
+rebuke_01 | [indignant][commanding][angry] Hands off the talent!
+rebuke_02 | [scandalized][shocked][offended] Excuse me?!
+stagger_01 | [flustered][angry][breathless] This is NOT in the script!
+stagger_02 | [panicked][vain][strained] Ugh, my hair!
+stagger_03 | [dizzy][dramatic][irritated] Somebody get me a stand-in!
+fan_break | [wounded][furious][disbelieving] My FAN?! That was hand-painted!
+crown_break | [enraged][shrill][outraged] My CROWN! Do you know what that cost?!
+tantrum | [screaming][furious][losing control] THAT'S IT. No more Miss Nice Diva!
+tantrum_end | [catching her breath][regaining composure][smug] ...Where was I? Oh yes. Winning.
+showoff | [smug][slow][condescending] Watch closely. You might learn something.
+curtain | [mischievous][playful][sinister] Intermission! Let's play a little game, darlings.
+curtain_found | [sulky][annoyed][grudging] Ugh. Fine. You found me.
+curtain_win | [rattled][grudging][suspicious] Bravo... How did you KNOW?
+curtain_fail | [gleeful][triumphant][menacing] Wrong! And now, the finale!
+pyre | [sultry][commanding][picky] Let's set the mood. Lights exactly as I like them.
+pyre_win | [whiny][indignant][furious] My lights! You've ruined the ambiance!
+pyre_fail | [low][menacing][rising to a roar] Too dark. Let's burn it ALL down.
+finale | [grand][building][ominous] For my final number... I'll need a volunteer. Or four.
+finale_win | [breaking][desperate][screaming] No... NO! My big finish!
+finale_fail | [quiet][cruel][final] Curtain falls. Hold your applause.
+retry | [cheery][condescending][sinister] Shall we try that again? From the top!
+spotlight_fail | [insulted][indignant][sharp] Nobody wants my spotlight?!
+karok_start | [intrigued][amused][dangerous] A duet? How daring.
+clash_win | [outraged][shocked][furious] You singed my COAT!
+clash_loss | [cold][judging][commanding] Know your place, darling.
+berserk | [menacing][cold fury][otherworldly] Time's up. The show goes on WITHOUT you.
+death | [weak][dying][proud to the end] ...Fine. Standing ovation... granted.
+laugh | [laughs haughtily][cruel][echoing] Ohohoho!
+flash_charge | [building][powerful][full shout] Footlight... FLASH!
+effort_01 | [short sharp effort][attacking][fierce] Hah!
+effort_02 | [sharp exhale][swinging][strong] Hyah!
+hurt | [pained gasp][surprised][hurt] Agh!
+wheel | [delighted][menacing][echoing] Round and round we go, darlings!
+gaze | [proud][radiant][commanding] Eyes on the star, darlings.
+gaze_flip | [panicked][vain][furious] No crown... no pictures!
+cue_hold | [sharp][commanding][theatrical] Tableau!
+cue_dance | [playful][grand][commanding] Music, maestro!
+charm | [delighted][sultry][purring] Oh, a fan!
+script_wings | [theatrical][reading aloud][sly] From the wings... to centre stage!
+script_centre | [theatrical][reading aloud][teasing] Centre stage... then off to the wings!
+script_chorus | [theatrical][reading aloud][grand] The whole chorus... then solos!
+script_solo | [theatrical][reading aloud][mischievous] Solos first... then the whole chorus!masquerade | [theatrical] [delighted] [playful] Masks on darlings! Shall we dance?
