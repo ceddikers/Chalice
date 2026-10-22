@@ -357,7 +357,7 @@ const KAROK_MECH_STATES = ['eclipse_mechanic', 'horizon_mechanic', 'iaido_mechan
       const ex = p0.px, ey = p0.py;
       player.x = lerp(sx, ex, s); player.y = lerp(sy, ey, s);
       player.targetX = player.x; player.targetY = player.y;
-      if (!c.hammerThrown && c.t >= 0.2 && c.style !== 'beam') {   // against a beam the hammer stays up as a shield
+      if (!c.hammerThrown && c.t >= 0.2 && c.style !== 'beam' && c.style !== 'smash') {   // against a beam the hammer stays up as a shield
         c.hammerThrown = true;
         player.throwHammerAway(c.side);
       }
@@ -450,6 +450,8 @@ const KAROK_MECH_STATES = ['eclipse_mechanic', 'horizon_mechanic', 'iaido_mechan
   // Beam-style win ("Grave Anchor"), seconds since the struggle ended: the beam BREAKS · wind up · THROW the hammer down the
   // dying beam · it HITS her · brace on the chain · YANK her off her feet · she SLAMS face-first · the hammer is reeled back
   // and CAUGHT · a shoulder rest · END
+  // Smash-style win (Cervanth), seconds since the struggle ended: the antlers are WRENCHED up · the Gravebreaker leaps onto his skull · SMASH (the hammer drives his head into the ground) · END
+  window.KAROK_SMASH = { WRENCH: 0.6, LEAP: 1.5, SMASH: 1.5, END: 2.8 };
   window.KAROK_ANCHOR = { BREAK: 0.3, THROW: 0.6, HIT: 0.82, YANK: 1.15, SLAM: 1.6, CATCH: 2.1, END: 2.7 };
 
   // The boss's own greatsword model, drawn by his real routine (same blade, guard, pommel and glow) with the
@@ -1141,7 +1143,7 @@ function getKarokCamera(boss, player) {
   const c = boss.karokClash;
   const mx = (boss.x + player.x) * 0.5, my = (boss.y + player.y) * 0.5;
   let zoom = 1.5, up = 52, tilt = 0;
-  if (c.style === 'beam') {
+  if (c.style === 'beam' || c.style === 'smash') {
     // a beam clash spans a long lane: frame both ends, closing in as the player wins ground
     const d = Math.hypot(boss.x - player.x, (boss.y - player.y) / PERSPECTIVE_TILT);
     const fit = Math.max(1.05, Math.min(1.75, 1.85 - (d - 70) / 330));

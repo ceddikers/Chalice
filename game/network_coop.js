@@ -269,7 +269,7 @@ class RaidCoopNetwork {
       ally.id = peerPlayerId;
       if (data.name) ally.name = String(data.name).slice(0, 32);
       if (data.look && window.Characters) ally.look = window.Characters.cleanLook(data.look, wantCls);
-      ally.wings = (data.wings === 'eclipse_wings' || data.wings === 'pyre_wings' || data.wings === 'moon_mobile') ? data.wings : null;
+      ally.wings = (data.wings === 'eclipse_wings' || data.wings === 'pyre_wings' || data.wings === 'bone_wings' || data.wings === 'moon_mobile') ? data.wings : null;
       ally.weaponEnh = Math.max(0, Math.min(15, data.we | 0));
       if (typeof ally.setArmorTier === 'function') { const at = Math.max(1, Math.min(3, data.armorTier | 0 || 1)); if (ally.armorTier !== at) ally.setArmorTier(at); }
       // While a hammer proxy is mid-clash / mid-leap its own choreography moves it; don't fight that with packets.
@@ -619,6 +619,8 @@ class RaidCoopNetwork {
         );
       } else if (data.event === 'final_clash_success') {
         b.completeFinalClashSuccess(true);
+      } else if (typeof data.event === 'string' && data.event.indexOf('cervanth_') === 0) {
+        if (typeof b.handleCervanthNet === 'function') b.handleCervanthNet(data);
       } else if (typeof data.event === 'string' && data.event.indexOf('ignis_') === 0) {
         // Ignis Vane's puzzle steps (boss_ignis.js). A guest's private request (false) is not relayed.
         if (typeof b.handleIgnisNet !== 'function' || b.handleIgnisNet(data) === false) return;
@@ -823,7 +825,7 @@ class RaidCoopNetwork {
       if (data.difficulty && !this.isHost && this.game.setDifficulty) this.game.setDifficulty(data.difficulty, false);
       this.game._skipIntro = !!data.skipIntro;
       this.game.skipCutscenes = !!data.skipCutscenes;      // the host's per-raid Skip cutscenes choice
-      this.game.raidId = data.raid === 'ignis' ? 'ignis' : 'vaelgor';   // which raid the host started
+      this.game.raidId = data.raid === 'ignis' ? 'ignis' : (data.raid === 'cervanth' ? 'cervanth' : 'vaelgor');   // which raid the host started
       if (!data.rejoin) this.purgeGhosts();     // a fresh raid: nobody is coming back to the last one
       this.game.enterRaidGate(false, !!data.clockPractice, !!data.finalPhasePractice, !!data.finalClashPractice);
       // Guests only talk to the host, so the host must relay raid starts to the rest of the party.

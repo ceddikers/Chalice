@@ -72,6 +72,7 @@
     essence:  { color: '#fb923c', label: 'Abyssal Essence' },
     wings:    { color: '#fb923c', label: 'Eclipse Wings' },
     pyre_wings: { color: '#f97316', label: 'Pyre Wings' },
+    bone_wings: { color: '#d6cfc4', label: 'Bone Wings' },
     heart:    { color: '#f5c542', label: 'Music-Box Heart' },
     porcelain: { color: '#e0e7ff', label: 'Porcelain Shard' },
     thread:   { color: '#f472b6', label: 'Lullaby Thread' },
@@ -80,7 +81,7 @@
     break:    { color: '#c084fc', label: 'Core' },
     orb:      { color: '#e5e7eb', label: 'Core' }
   };
-  const NAMES = { cosmetic_eclipse_wings: 'Eclipse Wings', cosmetic_pyre_wings: 'Pyre Wings', cosmetic_moon_mobile: 'Moon Mobile', porcelain_shard: 'Porcelain Shard', lullaby_thread: 'Lullaby Thread', music_box_heart: 'Music-Box Heart', gold: 'Gold', obsidian_shard: 'Obsidian Shard', vaelgor_seal: 'Eclipse Seal', vaelgor_essence: 'Abyssal Essence', pauldron_fragment: 'Pauldron Fragment' };
+  const NAMES = { cosmetic_eclipse_wings: 'Eclipse Wings', cosmetic_pyre_wings: 'Pyre Wings', cosmetic_bone_wings: 'Bone Wings', cosmetic_moon_mobile: 'Moon Mobile', porcelain_shard: 'Porcelain Shard', lullaby_thread: 'Lullaby Thread', music_box_heart: 'Music-Box Heart', gold: 'Gold', obsidian_shard: 'Obsidian Shard', vaelgor_seal: 'Eclipse Seal', vaelgor_essence: 'Abyssal Essence', pauldron_fragment: 'Pauldron Fragment' };
 
   function newTally() {
     return { gold: 0, vaelgor_seal: 0, vaelgor_essence: 0, obsidian_shard: 0, pauldron_fragment: 0, breakCores: [], accessories: [], essenceRollPct: null, essenceDropped: false };
@@ -117,7 +118,7 @@
         big: kind === 'break' || !!def.big,        // break cores are a little bigger
         r: (kind === 'break' || def.big) ? 11 : 8,
         color: def.color || k.color,               // pickup text colour (owner only)
-        essence: !!def.essence || kind === 'essence' || kind === 'wings' || kind === 'pyre_wings' || kind === 'heart' || kind === 'moon_mobile',      // wings glow and announce themselves like the essence
+        essence: !!def.essence || kind === 'essence' || kind === 'wings' || kind === 'pyre_wings' || kind === 'bone_wings' || kind === 'heart' || kind === 'moon_mobile',      // wings glow and announce themselves like the essence
         hold: !!def.hold,                          // true: rarity stays hidden (break cores, until the battle ends)
         revealAt: null,
         revealed: false,
@@ -438,7 +439,7 @@
         }
       }
       game.forge.applyRewards(c.rewards);
-      if (c.rewards && (c.rewards.cosmetic_eclipse_wings || c.rewards.cosmetic_pyre_wings || c.rewards.cosmetic_moon_mobile)) {
+      if (c.rewards && (c.rewards.cosmetic_eclipse_wings || c.rewards.cosmetic_pyre_wings || c.rewards.cosmetic_bone_wings || c.rewards.cosmetic_moon_mobile)) {
         game.forge.applyEquipmentToPlayer(game.localPlayer);
         if (window.fx) { window.fx.addPillar(game.localPlayer.x, game.localPlayer.y, 60, '#fb923c', 1.2); window.fx.addShockwave(game.localPlayer.x, game.localPlayer.y, 220, '#fb923c', 6, 0.7); }
       }
@@ -562,7 +563,7 @@
           ctx.save();
           ctx.font = '800 11.5px "Segoe UI", system-ui, sans-serif';
           ctx.textAlign = 'center';
-          const label = c.kind === 'wings' ? '✦ ECLIPSE WINGS ✦' : (c.kind === 'pyre_wings' ? '✦ PYRE WINGS ✦' : (c.kind === 'moon_mobile' ? '✦ MOON MOBILE ✦' : '✦ RARE DROP ✦'));
+          const label = c.kind === 'wings' ? '✦ ECLIPSE WINGS ✦' : (c.kind === 'pyre_wings' ? '✦ PYRE WINGS ✦' : (c.kind === 'bone_wings' ? '✦ BONE WINGS ✦' : (c.kind === 'moon_mobile' ? '✦ MOON MOBILE ✦' : '✦ RARE DROP ✦')));
           const ty = by - 30;
           const wdt = ctx.measureText(label).width + 16;
           ctx.fillStyle = 'rgba(30,12,2,0.82)';

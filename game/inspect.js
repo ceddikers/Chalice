@@ -21,7 +21,7 @@
     const wpn = f.getEquippedWeapon(p.classId || 'breaker'), arm = f.getEquippedArmor();
     return {
       name: str(p.name, 16), cls: (p.classId === 'hammer' || p.classId === 'reaper' || p.classId === 'arclight' || p.classId === 'unbound') ? p.classId : 'breaker', look: p.look || null,
-      wings: (p.wings === 'eclipse_wings' || p.wings === 'pyre_wings' || p.wings === 'moon_mobile') ? p.wings : null, armorTier: p.armorTier || 1,
+      wings: (p.wings === 'eclipse_wings' || p.wings === 'pyre_wings' || p.wings === 'bone_wings' || p.wings === 'moon_mobile') ? p.wings : null, armorTier: p.armorTier || 1,
       weapon: wpn ? { name: str(wpn.name, 40), tier: str(wpn.tier, 40), enh: wpn.enh | 0, atk: wpn.baseAtk | 0, model: str(wpn.weaponModelId, 30), color: wpn.weaponColor, glow: wpn.weaponGlow } : null,
       armor: arm ? { name: str(arm.name, 40), tier: str(arm.tier, 40), enh: arm.enh | 0, hp: arm.bonusHp | 0, def: arm.bonusDef | 0 } : null,
       acc: f.getEquippedAccessories().map(a => ({ slot: a.slot, name: str(a.name, 30), rarity: a.rarity || 'common', desc: str(a.desc, 140), color: a.color, lines: (a.lines || []).map(l => ({ id: l.id, v: l.v })) })),
@@ -35,7 +35,7 @@
     return {
       name: str(d.name, 16) || 'Warden', cls: (d.cls === 'hammer' || d.cls === 'reaper' || d.cls === 'arclight' || d.cls === 'unbound') ? d.cls : 'breaker',
       look: (window.Characters && d.look) ? window.Characters.cleanLook(d.look, (d.cls === 'hammer' || d.cls === 'reaper' || d.cls === 'arclight' || d.cls === 'unbound') ? d.cls : 'breaker') : null,
-      wings: (d.wings === 'eclipse_wings' || d.wings === 'pyre_wings' || d.wings === 'moon_mobile') ? d.wings : null, armorTier: clamp(d.armorTier, 1, 3) | 0 || 1,
+      wings: (d.wings === 'eclipse_wings' || d.wings === 'pyre_wings' || d.wings === 'bone_wings' || d.wings === 'moon_mobile') ? d.wings : null, armorTier: clamp(d.armorTier, 1, 3) | 0 || 1,
       weapon: d.weapon ? { name: str(d.weapon.name, 40), tier: str(d.weapon.tier, 40), enh: clamp(d.weapon.enh, 0, 15) | 0, atk: clamp(d.weapon.atk, 0, 99999) | 0, model: str(d.weapon.model, 30), color: col(d.weapon.color, '#38bdf8'), glow: col(d.weapon.glow, '#0284c7') } : null,
       armor: d.armor ? { name: str(d.armor.name, 40), tier: str(d.armor.tier, 40), enh: clamp(d.armor.enh, 0, 15) | 0, hp: clamp(d.armor.hp, 0, 99999) | 0, def: clamp(d.armor.def, 0, 9999) | 0 } : null,
       acc: (Array.isArray(d.acc) ? d.acc : []).slice(0, 4).map(a => ({
@@ -84,7 +84,7 @@
     const stat = (n, v) => `<div class="ar-stat"><span>${n}</span><b>${v}</b></div>`;
     $('in-left').innerHTML = `
       <div class="section-label">Equipment</div>${gear(w, 'weapon')}${gear(a, 'armor')}
-      ${d.wings ? (d.wings === 'moon_mobile' ? '<div class="in-gear" style="--tone:#fde68a"><b>Moon Mobile</b><small>Cosmetic</small></div>' : d.wings === 'pyre_wings' ? '<div class="in-gear" style="--tone:#f97316"><b>Pyre Wings</b><small>Cosmetic</small></div>' : '<div class="in-gear" style="--tone:#fb923c"><b>Eclipse Wings</b><small>Cosmetic</small></div>') : ''}
+      ${d.wings ? (d.wings === 'moon_mobile' ? '<div class="in-gear" style="--tone:#fde68a"><b>Moon Mobile</b><small>Cosmetic</small></div>' : d.wings === 'bone_wings' ? '<div class="in-gear" style="--tone:#d6cfc4"><b>Bone Wings</b><small>Cosmetic</small></div>' : d.wings === 'pyre_wings' ? '<div class="in-gear" style="--tone:#f97316"><b>Pyre Wings</b><small>Cosmetic</small></div>' : '<div class="in-gear" style="--tone:#fb923c"><b>Eclipse Wings</b><small>Cosmetic</small></div>') : ''}
       ${s ? `<div class="section-label">Stats</div>
         ${stat('Attack', s.atk)}${stat('Crit rate', Math.round(s.crit * 100) + '%')}${stat('Max health', s.hp.toLocaleString('en-US'))}${stat('Defense', s.def)}
         ${s.haste ? stat('Attack speed', '+' + Math.round(s.haste * 1000) / 10 + '%') : ''}${s.critdmg ? stat('Crit damage', '+' + Math.round(s.critdmg * 100) + '%') : ''}

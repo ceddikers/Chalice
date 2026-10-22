@@ -65,7 +65,7 @@
     this.defeatShown = true;
     const pct = this.boss ? Math.max(1, Math.round((this.boss.hp / this.boss.maxHp) * 100)) : 100;
     const sub = $('defeat-sub');
-    if (sub) sub.textContent = this.boss && this.boss.isHush ? `Hush is still singing, with ${pct}% of her health.` : this.boss && this.boss.isIgnis ? `Ignis Vane still stands with ${pct}% of her health.` : `Vaelgor still stands with ${pct}% of his health.`;
+    if (sub) sub.textContent = this.boss && this.boss.isCervanth ? `Cervanth still stands with ${pct}% of his health.` : this.boss && this.boss.isHush ? `Hush is still singing, with ${pct}% of her health.` : this.boss && this.boss.isIgnis ? `Ignis Vane still stands with ${pct}% of her health.` : `Vaelgor still stands with ${pct}% of his health.`;
     const client = this.net.isClient();
     $('defeat-retry')?.classList.toggle('hidden', client);
     const note = $('defeat-note');
@@ -74,7 +74,7 @@
     this.closeAllModals();
     const dr = $('defeat-results');
     if (dr && window.RaidStats) {
-      try { const res = window.RaidStats.compile(); res.rows.forEach(r => { r.mvp = false; }); dr.innerHTML = this.resultsHtml(res, null, [[(this.boss && this.boss.isHush ? 'Hush' : this.boss && this.boss.isIgnis ? 'Ignis' : 'Vaelgor') + ' left', pct + '%']]); } catch (e) { dr.innerHTML = ''; }
+      try { const res = window.RaidStats.compile(); res.rows.forEach(r => { r.mvp = false; }); dr.innerHTML = this.resultsHtml(res, null, [[(this.boss && this.boss.isCervanth ? 'Cervanth' : this.boss && this.boss.isHush ? 'Hush' : this.boss && this.boss.isIgnis ? 'Ignis' : 'Vaelgor') + ' left', pct + '%']]); } catch (e) { dr.innerHTML = ''; }
     }
     $('defeat-modal')?.classList.remove('hidden');
     $('spectate-banner')?.classList.add('hidden');

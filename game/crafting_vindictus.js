@@ -705,7 +705,7 @@ class VindictusForgeSystem {
     const hard = mode !== 'normal';
     const wingsCore = raid === 'ignis'
       ? (hard ? { kind: 'pyre_wings', rewards: { cosmetic_pyre_wings: 1 } } : null)
-      : { kind: 'wings', rewards: { cosmetic_eclipse_wings: 1 } };
+      : (raid === 'cervanth' ? (hard ? { kind: 'bone_wings', rewards: { cosmetic_bone_wings: 1 } } : null) : { kind: 'wings', rewards: { cosmetic_eclipse_wings: 1 } });
     const cores = [];
     const total = (hard ? 6 : 3) + extra;                         // extra = first-clear bonus cores
     // Keeper's Ring: a Seal core has a 50% chance to hold 2 Seals
@@ -793,7 +793,7 @@ class VindictusForgeSystem {
     for (const [k, v] of Object.entries(rewards || {})) {
       if (k === 'accessory') this.addAccessory(v);
       else if (k === 'gold') this.state.gold += v;
-      else if (k === 'cosmetic_eclipse_wings' || k === 'cosmetic_pyre_wings' || k === 'cosmetic_moon_mobile') {
+      else if (k === 'cosmetic_eclipse_wings' || k === 'cosmetic_pyre_wings' || k === 'cosmetic_bone_wings' || k === 'cosmetic_moon_mobile') {
         const id = k.slice('cosmetic_'.length);
         const c = this.state.cosmetics || (this.state.cosmetics = { owned: {}, wings: null });
         if (c.owned[id]) this.state.gold += 5000;      // a second pair is worth gold instead

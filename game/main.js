@@ -255,10 +255,10 @@ class Game25D {
 
   // Which raid's boss is live. Each boss is built once and reused; game.boss always points at the current one.
   useRaidBoss(id) {
-    const want = (id === 'ignis' && typeof IgnisVaneBoss !== 'undefined') ? 'ignis' : ((id === 'hush' && typeof HushBoss !== 'undefined') ? 'hush' : 'vaelgor');
+    const want = (id === 'ignis' && typeof IgnisVaneBoss !== 'undefined') ? 'ignis' : ((id === 'hush' && typeof HushBoss !== 'undefined') ? 'hush' : ((id === 'cervanth' && typeof CervanthBoss !== 'undefined') ? 'cervanth' : 'vaelgor'));
     this.raidId = want;
     this.bosses = this.bosses || { vaelgor: this.boss };
-    if (!this.bosses[want]) this.bosses[want] = want === 'ignis' ? new IgnisVaneBoss(0, -85) : (want === 'hush' ? new HushBoss(0, -85) : new VaelgorRaidBoss(0, -85));
+    if (!this.bosses[want]) this.bosses[want] = want === 'ignis' ? new IgnisVaneBoss(0, -85) : (want === 'hush' ? new HushBoss(0, -85) : (want === 'cervanth' ? new CervanthBoss(0, -85) : new VaelgorRaidBoss(0, -85)));
     this.boss = this.bosses[want];
   }
 
@@ -409,9 +409,10 @@ class Game25D {
     const titleEl = document.getElementById('zone-banner-title');
     const isIgnis = this.raidId === 'ignis';
     const isHush = this.raidId === 'hush';
-    if (titleEl) titleEl.textContent = isHush ? 'THE SEALED NURSERY — HUSH CHALICE RAID (SOLO)' : (isIgnis ? 'THE GILDED PYRE — IGNIS VANE CHALICE RAID' : 'ABYSSAL CATHEDRAL — VAELGOR CHALICE RAID');
+    const isCervanth = this.raidId === 'cervanth';
+    if (titleEl) titleEl.textContent = isCervanth ? 'THE HOLLOW GLADE — CERVANTH CHALICE RAID' : isHush ? 'THE SEALED NURSERY — HUSH CHALICE RAID (SOLO)' : (isIgnis ? 'THE GILDED PYRE — IGNIS VANE CHALICE RAID' : 'ABYSSAL CATHEDRAL — VAELGOR CHALICE RAID');
     const subEl = document.getElementById('zone-banner-sub');
-    if (subEl) subEl.textContent = isHush ? 'Break her key and her mask for bonus cores • Solo raid' : isIgnis ? 'Break her fan and her crown for bonus cores • Keep her ego in check' : '10% Vaelgor\'s Abyssal Essence Drop • 100% Guaranteed Eclipse Seal Token • Break Pauldron for Bonus Fragment!';
+    if (subEl) subEl.textContent = isCervanth ? 'Break his antlers for bonus cores • Read every startup' : isHush ? 'Break her key and her mask for bonus cores • Solo raid' : isIgnis ? 'Break her fan and her crown for bonus cores • Keep her ego in check' : '10% Vaelgor\'s Abyssal Essence Drop • 100% Guaranteed Eclipse Seal Token • Break Pauldron for Bonus Fragment!';
     this.syncPracticeButtons();
 
     if (broadcastToPeers) {
@@ -1240,6 +1241,7 @@ class Game25D {
       ];
       if (t.cosmetic_eclipse_wings) tiles.unshift(tile('rare', 'Eclipse Wings', 'Obtained'));
       if (t.cosmetic_pyre_wings) tiles.unshift(tile('rare', 'Pyre Wings', 'Obtained'));
+      if (t.cosmetic_bone_wings) tiles.unshift(tile('rare', 'Bone Wings', 'Obtained'));
       if (t.cosmetic_moon_mobile) tiles.unshift(tile('rare', 'Moon Mobile', 'Obtained'));
       for (const a of (t.accessories || [])) tiles.unshift(`<div class="vr-tile rare" style="--tone:${a.color}"><span>${escapeHtml(a.rarityName)} accessory</span><b style="color:${a.color}">${escapeHtml(a.name)}</b></div>`);
       const breaks = (t.breakCores || []).map(c => `<div class="vr-tile extra" style="--tone:${c.color}"><span>${escapeHtml(c.source)} · ${escapeHtml(c.tier)}</span><b>${escapeHtml(c.rewardText)}</b></div>`);
@@ -1287,6 +1289,9 @@ class Game25D {
     const lc = this.lastClear || {};
     const kick = document.getElementById('vr-kicker');
     if (kick) kick.textContent = lc.practice ? 'PRACTICE CLEARED' : `CHALICE RAID CLEARED · ${(lc.mode || 'normal').toUpperCase()}`;
+    // the title names the boss that fell (it used to say Vaelgor for every raid)
+    const vh = document.querySelector('#victory-modal h2');
+    if (vh && this.boss) vh.textContent = this.boss.isCervanth ? 'Cervanth, the Antlered Colossus' : this.boss.isHush ? 'Hush, the Lullaby Warden' : this.boss.isIgnis ? 'Ignis Vane, the Pyre Diva' : 'Vaelgor, Warden of the Eclipse';
     if (!box || !res) { if (box) box.innerHTML = ''; return; }
     box.innerHTML = this.resultsHtml(res, lc, null);
   }

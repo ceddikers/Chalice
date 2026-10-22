@@ -72,6 +72,7 @@
   const WINGS = {
     eclipse_wings: { uid: 'wings:eclipse', name: 'Eclipse Wings', tier: 'Cosmetic', desc: 'Dark feathers edged in your accent colour.', color: '#fb923c' },
     pyre_wings: { uid: 'wings:pyre', name: 'Pyre Wings', tier: 'Cosmetic', desc: 'Wings of living flame from the Gilded Pyre.', color: '#f97316' },
+    bone_wings: { uid: 'wings:bone', name: 'Bone Wings', tier: 'Cosmetic', desc: 'Wings of bleached antler with crimson-tipped points. From the Hollow Glade (Hard).', color: '#d6cfc4' },
     moon_mobile: { uid: 'wings:mobile', name: 'Moon Mobile', tier: 'Cosmetic', desc: 'A little mobile of moons and stars that turns above your head. From the Sealed Nursery (Hard).', color: '#fde68a', ico: 'mobile' }
   };
   const wingsByUid = (uid) => Object.keys(WINGS).find(k => WINGS[k].uid === uid) || null;

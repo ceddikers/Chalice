@@ -4033,6 +4033,34 @@ class BreakerPlayer25D {
     ctx.save();
     ctx.lineJoin = 'round'; ctx.lineCap = 'round';
 
+    // Bone Wings (Cervanth, Hard): the same fan, but each feather is a spar of bleached antler with side tines and a crimson point
+    if (this.wings === 'bone_wings') {
+      const LENB = [76, 96, 108, 102, 88, 70, 52];
+      for (let k = LENB.length - 1; k >= 0; k--) {
+        const fr = k / (LENB.length - 1);
+        const phi = (1.2 - fr * 1.85) + flap * (1 - fr * 0.4) + lag * 0.01;
+        const L = LENB[k] * (1 + air * 0.08), cp = Math.cos(phi), sp = Math.sin(phi);
+        const base = P(6, 62 - fr * 16, 6), tip = P(6 + cp * L + lag * (0.5 + fr), 62 - fr * 16 + sp * L, 10 + L * 0.3);
+        const dx = tip.x - base.x, dy = tip.y - base.y, len = Math.hypot(dx, dy);
+        if (len < 4) continue;
+        const nx = -dy / len, ny = dx / len;
+        const spar = (ax, ay, bx, by, w) => {
+          ctx.lineCap = 'round';
+          ctx.strokeStyle = '#2a1e22'; ctx.lineWidth = w + 2.4; ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+          ctx.strokeStyle = '#d6cfc4'; ctx.lineWidth = w; ctx.stroke();
+          ctx.strokeStyle = '#f4ece0'; ctx.lineWidth = Math.max(0.8, w * 0.35); ctx.beginPath(); ctx.moveTo(ax - nx * w * 0.2, ay - ny * w * 0.2); ctx.lineTo(bx - nx * w * 0.2, by - ny * w * 0.2); ctx.stroke();
+        };
+        spar(base.x, base.y, tip.x, tip.y, 5.2 - fr * 1.6);
+        for (const f of [0.45, 0.72]) {
+          const mx = base.x + dx * f, my = base.y + dy * f, tl = (13 - fr * 4) * (1.15 - f * 0.4);
+          spar(mx, my, mx + dx / len * tl * 0.7 + nx * tl, my + dy / len * tl * 0.7 + ny * tl, 3);
+        }
+        ctx.fillStyle = '#e11d48'; ctx.beginPath(); ctx.arc(tip.x, tip.y, 2.4, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+      return;
+    }
+
     // Pyre Wings (Ignis Vane, Hard): the same fan of feathers, but every feather is a living tongue of flame (flame_art.js),
     // banded crimson -> orange -> gold, writhing and shedding licks from the tips
     if (this.wings === 'pyre_wings' && window.FlameArt) {

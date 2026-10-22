@@ -2319,6 +2319,7 @@ class HammerPlayer25D extends BreakerPlayer25D {
     const tr = Math.sin(performance.now() * 0.06) * (k.phase === 'struggle' ? 1.6 : 0);
     const m = k.meter === undefined ? 0.5 : k.meter;
     if (k.style === 'beam') { this.poseKarokBeam(P, k, m, tr); return; }
+    if (k.style === 'smash') { this.poseKarokSmash(P, k, m, tr); return; }
     if (k.phase === 'intro') {
       const t = k.t;
       if (t < 0.45) {
@@ -2399,6 +2400,33 @@ class HammerPlayer25D extends BreakerPlayer25D {
         P.swordTipLocal = { fwd: 10, side: 40, up: 20 };
         P.torsoLeanFwd = -14; P.crouchZ = -16;
       }
+    }
+  }
+
+  // Against Cervanth's antlers: the slab is braced flat against the locked horns (same shield pose as a beam); the win is leaping onto his skull and
+  // smashing the head into the ground (window.KAROK_SMASH).
+  poseKarokSmash(P, k, m, tr) {
+    if (k.phase !== 'finish' || !k.win) { this.poseKarokBeam(P, k, m, tr); return; }
+    const A = window.KAROK_SMASH || { WRENCH: 0.6, LEAP: 1.5, SMASH: 1.5, END: 2.8 };
+    const t = k.t - k.finishAt;
+    if (t < A.WRENCH) {
+      // heave: both fists under the antlers, the slab on the shoulder
+      const u = hEaseOut(hClamp01(t / A.WRENCH));
+      P.rHandLocal = { fwd: hLerp(20, 14, u), side: 7, up: hLerp(52, 64, u) }; P.lHandLocal = { fwd: hLerp(22, 16, u), side: -6, up: hLerp(58, 70, u) };
+      P.swordTipLocal = { fwd: hLerp(62, 10, u), side: 0, up: hLerp(66, 120, u) };
+      P.torsoLeanFwd = hLerp(18, -6, u); P.crouchZ = -8 - 6 * u;
+    } else if (t < A.LEAP) {
+      // the leap: the slab hauled back over the head
+      const u = hEaseOut(hClamp01((t - A.WRENCH) / (A.LEAP - A.WRENCH)));
+      P.rHandLocal = { fwd: hLerp(14, -10, u), side: 10, up: hLerp(64, 96, u) }; P.lHandLocal = { fwd: hLerp(16, 8, u), side: -8, up: hLerp(70, 92, u) };
+      P.swordTipLocal = { fwd: hLerp(10, -50, u), side: 6, up: hLerp(120, 170, u) };
+      P.torsoLeanFwd = hLerp(-6, -14, u); P.crouchZ = 0;
+    } else {
+      // the smash, then a heavy follow-through
+      const u = hEaseOut(hClamp01((t - A.SMASH) / 0.18));
+      P.rHandLocal = { fwd: hLerp(-10, 30, u), side: 4, up: hLerp(96, 40, u) }; P.lHandLocal = { fwd: hLerp(8, 32, u), side: -4, up: hLerp(92, 44, u) };
+      P.swordTipLocal = { fwd: hLerp(-50, 76, u), side: 0, up: hLerp(170, 8, u) };
+      P.torsoLeanFwd = hLerp(-14, 26, u); P.crouchZ = -10 * u;
     }
   }
 

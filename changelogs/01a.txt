@@ -1,6 +1,16 @@
 CHALICE 01a
 The first numbered version. Everything below is new since the last shared build (called Vaelgor before the rename). Older versions' notes live in the changelogs folder.
 
+CERVANTH, THE ANTLERED COLOSSUS (NEW RAID BOSS, 1-4 players)
+- A skeletal stag as tall as a house, in the Hollow Glade. Pick Cervanth in the raid menu.
+- Nine attacks, each with its own wind-up: a different pose, a different sound and a different tell, so every move can be read before it lands. Learn them.
+- Four mechanics at 75%, 50%, 35% and 15% of his health. Normal: a failed Heart or Cage comes back once. Hard: failing wipes.
+- Break his antlers for bonus cores. A broken antler thins out his Tine Rain.
+- Rebuke works on his sweep, the first stomp of his hoof combo and his mantle lash. His Gore Thrust has a counter flash.
+- Gravebreaker: his Karok Clash is an antler lock. Win it and you leap onto his skull and smash his head into the ground.
+- Drops Vaelgor's loot. On Hard there is also a rare cosmetic: Bone Wings.
+- Raid menu and the victory screen now show the name of the boss that fell (the victory screen used to say Vaelgor every time).
+
 VISUAL POLISH (all classes)
 - Smoother animation: every move now blends into the next instead of snapping between poses (skill starts and ends, swings, the Reaper's flurry cuts, Arclight's side swaps). Strikes are just as fast.
 - Characters read as one figure: a single dark outline around the whole body, the seams at knees and elbows closed, softer inner lines and one light direction (a lit edge top-left, shade bottom-right). Weapons keep their own glow.

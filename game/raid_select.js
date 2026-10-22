@@ -22,7 +22,8 @@
   const RAIDS = {
     vaelgor: { name: 'Vaelgor', role: 'Warden of the Obsidian Eclipse', line: 'Obsidian Eclipse · 1–4 players', key: (d) => d },
     ignis: { name: 'Ignis Vane', role: 'The Pyre Diva', line: 'The Gilded Pyre · 1–4 players', key: (d) => 'ignis_' + d },
-    hush: { name: 'Hush', role: 'The Lullaby Warden', line: 'The Sealed Nursery · Solo', key: (d) => 'hush_' + d, solo: true }
+    hush: { name: 'Hush', role: 'The Lullaby Warden', line: 'The Sealed Nursery · Solo', key: (d) => 'hush_' + d, solo: true },
+    cervanth: { name: 'Cervanth', role: 'The Antlered Colossus', line: 'The Hollow Glade · 1–4 players', key: (d) => 'cervanth_' + d }
   };
   // Hush has her own loot: porcelain and thread for the Tier 4 Lullaby arms, and a Hard-only cosmetic
   const HUSH_REWARDS = [
@@ -52,6 +53,7 @@
     porcelain: '<path d="M5 9l6-5 8 4-2 9-8 3-5-6z"/><path d="M11 4l-1 7 7 6M10 11l-5 4"/>',
     thread: '<ellipse cx="12" cy="6" rx="6" ry="2"/><ellipse cx="12" cy="18" rx="6" ry="2"/><path d="M7 7.5v9M17 7.5v9M7 10l10 2M7 13l10 2"/>',
     nursery: '<path d="M4 20V10l8-6 8 6v10z"/><path d="M14.5 13a2.5 2.5 0 1 1-2.5-2.6 2 2 0 0 0 2.5 2.6z"/>',
+    antler: '<path d="M12 21v-8"/><path d="M12 13C9 12 6 9 6 4M12 13c3-1 6-4 6-9M9 8.5L5.5 8M15 8.5L18.5 8M12 13l-1.6-3M12 13l1.6-3"/>',
     flame: '<path d="M12 21c-4 0-6.5-2.6-6.5-6.2 0-3.4 2.6-5.3 3.6-8.3 1.5 1.8 1.6 3.4 1.3 4.8 1.6-1.4 2.7-4 2.2-7.3 3.4 2.4 5.9 6.1 5.9 10.3 0 3.9-2.5 6.7-6.5 6.7z"/><path d="M12 21c-1.7 0-2.8-1.1-2.8-2.8 0-1.6 1.2-2.6 2-4 .9 1.1 2 1.7 2.7 2.8.6 1.6-.2 4-1.9 4z"/>'
   };
   const MATIMG = { seal: 'seal', coin: 'gold', shard: 'shard', fragment: 'fragment', essence: 'essence', wings: 'wings', heart: 'heart', porcelain: 'porcelain', thread: 'thread', moon: 'mobile' };
@@ -87,6 +89,7 @@
           <div class="rs-item locked"><div class="rs-thumb">${svg('lock')}</div><div><b>Malakor</b><small>Coming soon</small></div></div>
           <div class="rs-item" data-raid="ignis"><div class="rs-thumb">${svg('flame')}</div><div><b>Ignis Vane</b><small id="rs-clear-ignis">The Gilded Pyre · 1–4 players</small></div></div>
           <div class="rs-item" data-raid="hush"><div class="rs-thumb">${svg('nursery')}</div><div><b>Hush</b><small id="rs-clear-hush">The Sealed Nursery · Solo</small></div></div>
+          <div class="rs-item" data-raid="cervanth"><div class="rs-thumb">${svg('antler')}</div><div><b>Cervanth</b><small id="rs-clear-cervanth">The Hollow Glade · 1–4 players</small></div></div>
         </aside>
         <section class="rs-stage">
           <canvas id="rs-canvas" width="640" height="440"></canvas>
@@ -152,7 +155,7 @@
     if (nm) nm.textContent = R.name;
     if (rl) rl.textContent = R.role;
     // Ignis shares Vaelgor's loot, except her rare cosmetic: her own Pyre Wings, Hard only
-    const rewards = pick === 'hush' ? HUSH_REWARDS : pick === 'ignis'
+    const rewards = pick === 'cervanth' ? REWARDS.map(r => r[0] === 'wings' ? ['wings', 'Bone Wings', 'Very rare', 'Hard only', 'rare', 'Wings of bleached antler. Only on Hard, and it glows when it drops.'] : r) : pick === 'hush' ? HUSH_REWARDS : pick === 'ignis'
       ? REWARDS.map(r => r[0] === 'wings' ? ['wings', 'Pyre Wings', 'Very rare', 'Hard only', 'rare', 'Her own cosmetic wings of living flame. Only on Hard, and it glows orange when it drops.'] : r)
       : REWARDS;
     $('rs-reward-row').innerHTML = rewards.map(([icon, name, hardTag, normalTag, cls, tip]) => {
@@ -205,6 +208,16 @@
       } catch (e) { /* the backdrop alone is still a fine stage */ }
       return;
     }
+    if (pick === 'cervanth' && typeof CervanthBoss !== 'undefined') {
+      try {
+        drawGladeStage(c2, w, h, t);
+        if (!previewCv) previewCv = new CervanthBoss(0, 0);
+        c2.save(); c2.translate(w * 0.5, h * 0.9); const s = h / 300; c2.scale(s, s);
+        previewCv.drawPreview(c2);
+        c2.restore();
+      } catch (e) { /* the backdrop alone is still a fine stage */ }
+      return;
+    }
     if (pick === 'hush' && typeof HushBoss !== 'undefined') {
       try {
         drawNurseryStage(c2, w, h, t);
@@ -237,6 +250,29 @@
   let previewIg = null;
   // Hush's nursery for the preview: night wallpaper, the moon window, a mobile turning, a round rug in moonlight
   let previewHs = null;
+  let previewCv = null;
+  // Cervanth's glade for the preview: a cold teal-black sky, dead trees, ash ground, mist
+  function drawGladeStage(c, w, h, t) {
+    const bg = c.createLinearGradient(0, 0, 0, h);
+    bg.addColorStop(0, '#05060c'); bg.addColorStop(0.65, '#12201f'); bg.addColorStop(1, '#0a0e10');
+    c.fillStyle = bg; c.fillRect(0, 0, w, h);
+    c.strokeStyle = '#07080c'; c.lineCap = 'round';
+    for (let i = 0; i < 9; i++) {
+      const x = (i + 0.5) * w / 9 + Math.sin(i * 7) * 14, hh = h * (0.45 + (i % 3) * 0.12);
+      c.lineWidth = 7 + (i % 3) * 3; c.beginPath(); c.moveTo(x, h * 0.78); c.lineTo(x + Math.sin(i) * 6, h * 0.78 - hh); c.stroke();
+      c.lineWidth = 3; for (let k = 0; k < 3; k++) { const y = h * 0.78 - hh * (0.45 + k * 0.2); c.beginPath(); c.moveTo(x, y); c.lineTo(x + (k % 2 ? 1 : -1) * (30 + k * 10), y - 36); c.stroke(); }
+    }
+    c.fillStyle = '#1b1721'; c.fillRect(0, h * 0.78, w, h * 0.22);
+    c.save(); c.translate(w * 0.5, h * 0.9); c.scale(1, 0.3);
+    c.fillStyle = '#2a2530'; c.beginPath(); c.arc(0, 0, w * 0.38, 0, Math.PI * 2); c.fill();
+    c.strokeStyle = 'rgba(225,29,72,0.35)'; c.lineWidth = 3; c.setLineDash([16, 12]); c.beginPath(); c.arc(0, 0, w * 0.3, 0, Math.PI * 2); c.stroke(); c.setLineDash([]);
+    c.restore();
+    for (let i = 0; i < 4; i++) {
+      const x = ((t * 14 + i * w / 4) % (w * 1.4)) - w * 0.2, y = h * (0.7 + (i % 2) * 0.08);
+      const g = c.createRadialGradient(x, y, 4, x, y, 150); g.addColorStop(0, 'rgba(150,185,185,0.10)'); g.addColorStop(1, 'rgba(150,185,185,0)');
+      c.fillStyle = g; c.beginPath(); c.ellipse(x, y, 150, 40, 0, 0, Math.PI * 2); c.fill();
+    }
+  }
   function drawNurseryStage(c, w, h, t) {
     const bg = c.createLinearGradient(0, 0, 0, h);
     bg.addColorStop(0, '#0b1230'); bg.addColorStop(0.72, '#16204a'); bg.addColorStop(1, '#05060f');
